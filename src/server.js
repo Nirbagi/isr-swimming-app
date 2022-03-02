@@ -16,7 +16,7 @@ require('dotenv').config({path: __dirname+'/config/dev.env'});
 
 const app = new Koa();
 const bodyparser = new BodyParser();
-const PORT = 8585;
+const PORT = 43567;
 
 // enforce env var path to server.js
 enforceNodePath(__dirname);
