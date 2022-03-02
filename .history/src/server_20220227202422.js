@@ -1,0 +1,17 @@
+require('dotenv').config({path: __dirname+'/config/dev.env'});
+
+const enforceNodePath = require('enforce-node-path');
+enforceNodePath(__dirname);
+
+const Koa = require('koa');
+const BodyParser = require('koa-bodyparser');
+const Routes = require('./routes/router');
+
+const app = new Koa();
+const bodyparser = new BodyParser();
+
+app.use(bodyparser);
+
+app.use(Routes.routes()).use(Routes.allowedMethods());
+
+app.listen(8585, () => console.log('Server Started...'));

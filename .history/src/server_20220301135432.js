@@ -1,0 +1,42 @@
+/*********************imports*********************/
+const Koa = require('koa');
+const Morgan = require('koa-morgan');
+const session = require('koa-session');
+const passport = require('koa-passport');
+const BodyParser = require('koa-bodyparser');
+const enforceNodePath = require('enforce-node-path');
+
+require('./server/auth');
+
+const indexRoutes = require('./server/routes/index');
+const usersRoutes = require('./server/routes/users');
+
+// env vars
+require('dotenv').config({path: __dirname+'/config/dev.env'});
+/*********************imports*********************/
+
+const app = new Koa();
+const bodyparser = new BodyParser();
+const PORT = 8585;
+
+// enforce env var path to server.js
+enforceNodePath(__dirname);
+
+// sessions
+app.keys = ['secret'];
+app.use(session(app));
+
+// authentication
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+app.use(Morgan('combined'));
+app.use(bodyparser);
+
+app.use(indexRoutes.routes()).use(indexRoutes.allowedMethods());
+app.use(usersRoutes.routes()).use(usersRoutes.allowedMethods());
+
+app.listen(PORT, () => {
+    console.log(`Server listening on port: ${PORT}`);
+});
