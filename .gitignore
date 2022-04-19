@@ -111,3 +111,5 @@ dist
 
 *.env
 src/config/dev.env
+
+.DS_Store
