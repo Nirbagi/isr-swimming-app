@@ -6,10 +6,13 @@ const passport = require("koa-passport");
 const BodyParser = require("koa-bodyparser");
 const enforceNodePath = require("enforce-node-path");
 
-const indexRoutes = require("./server/routes/index-router");
-const usersRoutes = require("./server/routes/users/users-router");
-const usersAuthRoutes = require("./server/routes/users/auth-router");
+const trainingScoresRoutes = require("./server/routes/training-scores-router");
+const usersRoutes = require("./server/routes/users-router");
+const usersAuthRoutes = require("./server/routes/users-auth-router");
+const AnnouncementsRoutes = require("./server/routes/announcements-router");
+const VideosRoutes = require("./server/routes/videos-router");
 
+const userQueries = require("./server/db/queries/users");
 // env vars
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config({ path: __dirname + "/config/dev.env" });
@@ -28,7 +31,7 @@ app.keys = ["secret"];
 app.use(session(app));
 
 // authentication
-require("./server/auth");
+require("./server/services/auth");
 app.use(passport.initialize());
 app.use(
   passport.session({
@@ -41,29 +44,58 @@ app.use(
 app.use(Morgan("combined"));
 app.use(bodyparser);
 
+// error handler
 app.use(async (ctx, next) => {
   try {
     await next();
   } catch (err) {
     ctx.status = err.status || 500;
-    ctx.body = err.message;
+    ctx.body = { error: err.message };
     ctx.app.emit("error", err, ctx);
   }
 });
 
-function log_err(err) {
-  console.log(err);
-}
-
 app.on("error", async (err, ctx) => {
-  await log_err(err);
+  console.log(err);
 });
 
-app.use(indexRoutes.routes()).use(indexRoutes.allowedMethods());
-// app.use(usersRoutes.routes()).use(usersRoutes.allowedMethods());
-// app.use(usersAuthRoutes.routes()).use(usersAuthRoutes.allowedMethods());
-app.use(usersRoutes.middleware());
+// Authentication - middleware for getting role_id before request
+app.use(async (ctx, next) => {
+  const nonSecurePaths = ["/users/auth/login", "/users/auth/register"];
+  if (!ctx.isAuthenticated() && !nonSecurePaths.includes(ctx.path)) {
+    ctx.throw(401, "Not Authenticated");
+  }
+  if (ctx.isAuthenticated()) {
+    ctx.role_id = await userQueries.getUserRoleByID(ctx.session.user_id);
+  }
+  await next();
+});
+
+// Authorization
+app.use(async (ctx, next) => {
+  const adminCoachPaths = [
+    "/videos/add",
+    "/videos/edit",
+    "/announcements/add",
+    "/announcements/edit",
+    "/users/role",
+    "/users/role/edit",
+  ];
+  adminCoachPaths.forEach((path) => {
+    if (ctx.role_id > 2 && ctx.path.includes(path)) {
+      ctx.throw(401, "Not Authorized");
+    }
+  });
+
+  await next();
+});
+
+// app.use(indexRoutes.routes()).use(indexRoutes.allowedMethods());
 app.use(usersAuthRoutes.middleware());
+app.use(usersRoutes.middleware());
+app.use(trainingScoresRoutes.middleware());
+app.use(AnnouncementsRoutes.middleware());
+app.use(VideosRoutes.middleware());
 
 app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}`);
