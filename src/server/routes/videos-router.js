@@ -16,6 +16,8 @@ router.get("/", async (ctx) => {
   ctx.body = videos;
 });
 
+// higher authorization level required
+
 router.post("/add", async (ctx) => {
   const params = await create_video_schema.validateAsync(ctx.request.body);
   const video_id = await videoQueries.addVideo(params);

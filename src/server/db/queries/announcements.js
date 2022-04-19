@@ -1,33 +1,30 @@
 const knex = require("../connection");
 
-function createAnnouncement(user_id, team_id = null, body) {
+function createAnnouncement(user_id, params) {
+  params.created_at = knex.fn.now();
+  params.updated_at = knex.fn.now();
   return knex("announcements")
-    .insert({
-      author_id: parseInt(user_id),
-      team_id: team_id,
-      body: body,
-      created_at: knex.fn.now(),
-      updated_at: knex.fn.now(),
-    })
+    .insert(Object.assign({}, { author_id: user_id }, params))
     .returning("announcement_id")
     .then((id) => id[0]["announcement_id"]);
 }
 
-function getAnnouncements(skip, take, team_id = null) {
+function getAnnouncements(params) {
   return knex("announcements")
-    .where({ team_id: team_id })
+    .where({ team_id: params.team_id })
     .orderBy("created_at", "desc")
     .paginate({
-      perPage: take,
-      currentPage: skip,
+      perPage: params.take,
+      currentPage: params.skip,
     })
     .then((results) => results["data"]);
 }
 
-function updateAnnouncement(user_id, announcement_id, new_body) {
+function updateAnnouncement(user_id, params) {
+  params.updated_at = knex.fn.now();
   return knex("announcements")
-    .update({ author_id: user_id, body: new_body })
-    .where({ announcement_id: announcement_id })
+    .update({ author_id: user_id, body: params.body })
+    .where({ announcement_id: params.announcement_id })
     .returning("announcement_id")
     .then((id) => id[0]["announcement_id"]);
 }

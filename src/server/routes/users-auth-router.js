@@ -9,9 +9,9 @@ const {
 const router = new KoaRouter();
 
 router.post("/register", async (ctx) => {
-  const validated = await auth_schema.validateAsync(ctx.request.body);
-  validated.role_id = 4;
-  await queries.addUser(validated);
+  const params = await auth_schema.validateAsync(ctx.request.body);
+  params.role_id = 4;
+  await queries.addUser(params);
   return passport.authenticate("local", (err, user, info, status) => {
     console.log(ctx);
     if (user) {

@@ -28,36 +28,29 @@ function getUserInfoByID(user_id) {
 
 function addUser(user) {
   const salt = bcrypt.genSaltSync();
-  const hash = bcrypt.hashSync(user.password, salt);
-  return knex("users")
-    .insert({
-      username: user.username,
-      password: hash,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      email: user.email,
-      role_id: process.env.NOT_ASSIGNED_ROLE_ID,
-      created_at: knex.fn.now(),
-      updated_at: knex.fn.now(),
-    })
-    .returning("*");
+  user.password = bcrypt.hashSync(user.password, salt);
+  user.role_id = process.env.NOT_ASSIGNED_ROLE_ID;
+  user.created_at = knex.fn.now();
+  user.updated_at = knex.fn.now();
+  return knex("users").insert({ user }).returning("*");
 }
 
-function updateUser(user_id, user) {
-  user.updated_at = knex.fn.now();
+function updateUser(params) {
+  params.updated_at = knex.fn.now();
   return knex("users")
-    .update(user)
-    .where({ user_id: parseInt(user_id) })
+    .update(params)
+    .where({ user_id: params.user_id })
     .returning("*")
     .then((user) => {
       return user[0]["user_id"];
     });
 }
 
-function updateUserRoleID(user_id, role_id) {
+function updateUserRoleID(params) {
+  params.updated_at = knex.fn.now();
   return knex("users")
-    .update({ role_id: role_id, updated_at: knex.fn.now() })
-    .where({ user_id: parseInt(user_id) })
+    .update(params)
+    .where({ user_id: params.user_id })
     .returning("*")
     .then((user) => {
       return { user_id: user[0]["user_id"], role_id: user[0]["role_id"] };

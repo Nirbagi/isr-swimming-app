@@ -74,12 +74,16 @@ app.use(async (ctx, next) => {
 // Authorization
 app.use(async (ctx, next) => {
   const adminCoachPaths = [
-    "/videos/add",
-    "/videos/edit",
-    "/announcements/add",
-    "/announcements/edit",
+    // users
     "/users/role",
     "/users/role/edit",
+    "/users/user_info",
+    // videos
+    "/videos/add",
+    "/videos/edit",
+    //announcements
+    "/announcements/add",
+    "/announcements/edit",
   ];
   adminCoachPaths.forEach((path) => {
     if (ctx.role_id > 2 && ctx.path.includes(path)) {
