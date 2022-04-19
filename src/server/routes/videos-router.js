@@ -4,18 +4,14 @@ const {
   get_videos_schema,
   create_video_schema,
   update_video_schema,
+  delete_video_schema,
 } = require("../services/shcema_validators/videos_schemas");
 
 const router = new KoaRouter();
 
 router.get("/", async (ctx) => {
   const params = await get_videos_schema.validateAsync(ctx.request.query);
-  const videos = await videoQueries.getVideos(
-    params.skip,
-    params.take,
-    params.category,
-    params.sub_category
-  );
+  const videos = await videoQueries.getVideos(params);
   ctx.status = 200;
   ctx.body = videos;
 });
@@ -28,16 +24,21 @@ router.post("/add", async (ctx) => {
 });
 
 router.patch("/edit/:video_id", async (ctx) => {
-  const params = await update_video_schema.validateAsync(ctx.request.body);
+  const params = await update_video_schema.validateAsync(
+    Object.assign({}, { video_id: ctx.params.video_id }, ctx.request.body)
+  );
   const video_id = await videoQueries.updateVideo(params);
   ctx.status = 200;
   ctx.body = { status: "updated", video_id: video_id };
 });
 
 router.delete("/edit/:video_id", async (ctx) => {
-  const ancmt_id = await ancmtQueries.deleteAnnouncement(ctx.params.ancmt_id);
+  const params = await delete_video_schema.validateAsync({
+    video_id: ctx.params.video_id,
+  });
+  const video_id = await videoQueries.deleteVideo(params.video_id);
   ctx.status = 200;
-  ctx.body = { status: "deleted", msg_id: ancmt_id };
+  ctx.body = { status: "deleted", video_id: video_id };
 });
 
 router.prefix("/videos");
