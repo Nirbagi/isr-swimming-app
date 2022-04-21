@@ -23,7 +23,7 @@ function getAnnouncements(params) {
 function updateAnnouncement(user_id, params) {
   params.updated_at = knex.fn.now();
   return knex("announcements")
-    .update({ author_id: user_id, body: params.body })
+    .update(params)
     .where({ announcement_id: params.announcement_id })
     .returning("announcement_id")
     .then((id) => id[0]["announcement_id"]);

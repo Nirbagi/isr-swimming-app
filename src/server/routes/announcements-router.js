@@ -9,6 +9,7 @@ const {
 
 const router = new KoaRouter();
 
+// TODO: add author name
 router.get("/", async (ctx) => {
   const params = await get_ancmt_schema.validateAsync(ctx.request.query);
   // if requesting general announcements
@@ -33,7 +34,7 @@ router.patch("/edit/:announcement_id", async (ctx) => {
   const params = await update_ancmt_schema.validateAsync(
     Object.assign(
       {},
-      { announcement_id: ctx.params.ancmt_id },
+      { announcement_id: ctx.params.announcement_id },
       ctx.request.body
     )
   );
@@ -47,7 +48,7 @@ router.patch("/edit/:announcement_id", async (ctx) => {
 
 router.delete("/edit/:announcement_id", async (ctx) => {
   const params = await delete_ancmt_schema.validateAsync({
-    announcement_id: ctx.params.ancmt_id,
+    announcement_id: ctx.params.announcement_id,
   });
   const ancmt_id = await ancmtQueries.deleteAnnouncement(
     params.announcement_id
