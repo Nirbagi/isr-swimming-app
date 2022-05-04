@@ -32,7 +32,7 @@ function addUser(user) {
   user.role_id = process.env.NOT_ASSIGNED_ROLE_ID;
   user.created_at = knex.fn.now();
   user.updated_at = knex.fn.now();
-  return knex("users").insert({ user }).returning("*");
+  return knex("users").insert(user).returning("*");
 }
 
 function updateUser(params) {
