@@ -25,9 +25,8 @@ router.get("/general", async (ctx) => {
 // TODO: add author name
 router.get("/", async (ctx) => {
   const params = await get_ancmt_schema.validateAsync(ctx.request.query);
-  params.team_id = await teamMembersQueries.getTeamIDByUserID(
-    ctx.session.user_id
-  );
+  team_id = await teamMembersQueries.getTeamIDByUserID(ctx.session.user_id);
+  params.team_id = team_id.team_id;
   try {
     const announcements = await ancmtQueries.getAnnouncements(params);
     ctx.status = 200;
