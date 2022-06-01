@@ -22,7 +22,17 @@ function getTeamMembersByTeamID(team_id) {
     .returning("*");
 }
 
+function getTeamDetailsByUserID(user_id) {
+  return knex("teams_members")
+    .select(["teams_members.team_id", "teams.name"])
+    .where({ user_id: parseInt(user_id) })
+    .leftOuterJoin("teams", "teams.team_id", "teams_members.team_id")
+    .first()
+    .returning("*");
+}
+
 module.exports = {
   getUserRoleNameID,
   getTeamMembersByTeamID,
+  getTeamDetailsByUserID,
 };

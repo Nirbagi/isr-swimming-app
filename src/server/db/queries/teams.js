@@ -18,6 +18,16 @@ function getTeamByTeamID(team_id) {
     .returning("*");
 }
 
+function getTeams(params) {
+  return knex("teams")
+    .orderBy("created_at", "desc")
+    .paginate({
+      perPage: params.take,
+      currentPage: params.skip,
+    })
+    .then((results) => results["data"]);
+}
+
 function updateTeam(team_id, team_data) {
   return knex("teams")
     .update(team_data)
@@ -35,6 +45,7 @@ function deleteTeam() {
 module.exports = {
   createTeam,
   getTeamByTeamID,
+  getTeams,
   updateTeam,
   deleteTeam,
 };

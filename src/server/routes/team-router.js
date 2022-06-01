@@ -4,7 +4,7 @@ const teamMembersQueries = require("../db/queries/teams_members");
 const joinQueries = require("../db/queries/join_queries");
 
 const {
-  get_team_schema,
+  get_teams_schema,
   create_team_schema,
   update_team_schema,
   delete_team_schema,
@@ -13,11 +13,9 @@ const {
 const router = new KoaRouter();
 
 router.get("/", async (ctx) => {
-  const team_id = await teamMembersQueries.getTeamIDByUserID(
-    ctx.session.user_id
-  );
+  const team = await joinQueries.getTeamDetailsByUserID(ctx.session.user_id);
   ctx.status = 200;
-  ctx.body = { team_id: team_id };
+  ctx.body = { team_id: team.team_id, team_name: team.name };
 });
 
 router.get("/members", async (ctx) => {
@@ -30,10 +28,10 @@ router.get("/members", async (ctx) => {
 });
 
 // higher authorization level required
-
+// TODO: fix Announcements queries in team
 router.get("/all", async (ctx) => {
-  const params = await get_team_schema.validateAsync(ctx.request.query);
-  const announcements = await teamsQueries.getAnnouncements(params);
+  const params = await get_teams_schema.validateAsync(ctx.request.query);
+  const announcements = await teamsQueries.getTeams(params);
   ctx.status = 200;
   ctx.body = announcements;
 });

@@ -22,8 +22,7 @@ function getTeamIDByUserID(user_id) {
   return knex("teams_members")
     .select("team_id")
     .where({ user_id: parseInt(user_id) })
-    .first()
-    .then((team_id) => team_id.team_id);
+    .first();
 }
 
 module.exports = {

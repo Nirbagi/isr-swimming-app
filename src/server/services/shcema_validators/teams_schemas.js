@@ -2,7 +2,7 @@ const router = require("koa-joi-router");
 
 const Joi = router.Joi;
 
-const get_team_schema = Joi.object({
+const get_teams_schema = Joi.object({
   skip: Joi.number().integer().required(),
   take: Joi.number().integer().required(),
   team_id: Joi.number().integer().default(null),
@@ -23,7 +23,7 @@ const delete_team_schema = Joi.object({
 });
 
 module.exports = {
-  get_team_schema,
+  get_teams_schema,
   create_team_schema,
   update_team_schema,
   delete_team_schema,
