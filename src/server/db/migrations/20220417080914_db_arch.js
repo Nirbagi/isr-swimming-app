@@ -11,6 +11,7 @@ exports.up = function (knex, Promise) {
       table.integer("min_age");
       table.integer("max_age");
       table.string("description");
+
       table.timestamps(false, true);
     })
     .createTable("users", (table) => {
@@ -20,7 +21,8 @@ exports.up = function (knex, Promise) {
       table.string("first_name");
       table.string("last_name");
       table.integer("age");
-      table.string("email");
+      table.string("email").unique().notNullable();
+      table.integer("id_number").unique().notNullable();
       table.string("address");
       table.string("city");
       table.string("zipcode");
@@ -127,6 +129,7 @@ exports.up = function (knex, Promise) {
     .createTable("announcements", (table) => {
       table.increments("announcement_id").primary().notNullable().unique();
       table.string("body").notNullable();
+      table.string("image_link");
       table
         .integer("author_id")
         .references("user_id")
