@@ -9,6 +9,7 @@ const get_ancmt_schema = Joi.object({
 
 const create_ancmt_schema = Joi.object({
   body: Joi.string().required(),
+  image_link: Joi.string(),
   team_id: Joi.number().integer().default(null),
 });
 
