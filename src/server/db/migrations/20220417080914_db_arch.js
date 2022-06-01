@@ -22,7 +22,7 @@ exports.up = function (knex, Promise) {
       table.string("last_name");
       table.integer("age");
       table.string("email").unique().notNullable();
-      table.integer("id_number").unique().notNullable();
+      table.string("id_number").unique().notNullable();
       table.string("address");
       table.string("city");
       table.string("zipcode");
