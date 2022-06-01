@@ -1,5 +1,6 @@
 /*********************imports*********************/
 const Koa = require("koa");
+const JoiRouter = require("koa-joi-router");
 const Morgan = require("koa-morgan");
 const session = require("koa-session");
 const passport = require("koa-passport");
@@ -50,7 +51,9 @@ app.use(async (ctx, next) => {
   try {
     await next();
   } catch (err) {
-    ctx.status = err.status || 500;
+    if (err instanceof JoiRouter.Joi.ValidationError) {
+      ctx.status = 400;
+    } else ctx.status = err.status || 500;
     ctx.body = { error: err.message };
     ctx.app.emit("error", err, ctx);
   }
@@ -62,7 +65,12 @@ app.on("error", async (err, ctx) => {
 
 // Authentication - middleware for getting role_id before request
 app.use(async (ctx, next) => {
-  const nonSecurePaths = ["/users/auth/login", "/users/auth/register"];
+  const nonSecurePaths = [
+    "/users/auth/login",
+    "/users/auth/register",
+    "/announcements/general",
+    "/videos",
+  ];
   if (!ctx.isAuthenticated() && !nonSecurePaths.includes(ctx.path)) {
     ctx.throw(401, "Not Authenticated");
   }

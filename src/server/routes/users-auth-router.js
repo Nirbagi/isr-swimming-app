@@ -10,8 +10,11 @@ const router = new KoaRouter();
 
 router.post("/register", async (ctx) => {
   const params = await auth_schema.validateAsync(ctx.request.body);
-  params.role_id = 4;
-  await queries.addUser(params);
+  try {
+    await queries.addUser(params);
+  } catch (err) {
+    ctx.throw(400, err.detail);
+  }
   return passport.authenticate("local", (err, user, info, status) => {
     console.log(ctx);
     if (user) {
@@ -34,7 +37,7 @@ router.post("/login", async (ctx) => {
       ctx.status = 200;
       ctx.body = { status: "successfully logged in." };
     } else {
-      ctx.throw(500, "Unable to login. check your username or password.");
+      ctx.throw(400, "Unable to login. check your username or password.");
     }
   })(ctx);
 });
