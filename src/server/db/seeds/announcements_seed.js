@@ -6,6 +6,7 @@ exports.seed = (knex, Promise) => {
         {
           author_id: 1,
           body: "1st msg - general",
+          image_link: "https://imgur.com/Z7nmUKr",
           created_at: knex.fn.now(),
           updated_at: knex.fn.now(),
         },

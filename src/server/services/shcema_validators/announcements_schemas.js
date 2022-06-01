@@ -5,7 +5,6 @@ const Joi = router.Joi;
 const get_ancmt_schema = Joi.object({
   skip: Joi.number().integer().required(),
   take: Joi.number().integer().required(),
-  team_id: Joi.number().integer().default(null),
 });
 
 const create_ancmt_schema = Joi.object({
