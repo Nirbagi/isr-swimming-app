@@ -12,7 +12,7 @@ function createAnnouncement(user_id, params) {
 function getAnnouncements(params) {
   return knex("announcements")
     .where({ team_id: params.team_id })
-    .orderBy("created_at", "desc")
+    .orderBy("updated_at", "desc")
     .paginate({
       perPage: params.take,
       currentPage: params.skip,
