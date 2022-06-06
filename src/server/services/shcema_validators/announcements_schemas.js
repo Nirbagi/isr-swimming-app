@@ -15,7 +15,8 @@ const create_ancmt_schema = Joi.object({
 
 const update_ancmt_schema = Joi.object({
   announcement_id: Joi.number().integer().required(),
-  body: Joi.string().required(),
+  image_link: Joi.string(),
+  body: Joi.string(),
 });
 
 const delete_ancmt_schema = Joi.object({

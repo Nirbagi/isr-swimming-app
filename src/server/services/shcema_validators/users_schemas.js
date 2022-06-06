@@ -15,7 +15,6 @@ const edit_user_schema = Joi.object({
   first_name: Joi.string(),
   last_name: Joi.string(),
   age: Joi.number().integer(),
-  email: Joi.string(),
   address: Joi.string(),
   city: Joi.string(),
   zipcode: Joi.number().integer(),
@@ -31,6 +30,7 @@ const admin_edit_user_schema = Joi.object({
   address: Joi.string(),
   city: Joi.string(),
   zipcode: Joi.number().integer(),
+  id_number: Joi.number().integer(),
 });
 
 const edit_role_schema = Joi.object({
