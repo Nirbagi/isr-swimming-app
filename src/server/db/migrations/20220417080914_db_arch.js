@@ -56,6 +56,22 @@ exports.up = function (knex, Promise) {
         .onDelete("cascade");
       table.timestamps(false, true);
     })
+    .createTable("exercises", (table) => {
+      table.increments("exercise_id").primary().notNullable().unique();
+      table
+        .integer("coach_id")
+        .references("user_id")
+        .inTable("users")
+        .notNull()
+        .onDelete("cascade");
+      table.string("name");
+      table.integer("num_of_sets");
+      table.integer("num_of_reps");
+      table.integer("distance");
+      table.string("notes");
+      table.boolean("is_public");
+      table.timestamps(false, true);
+    })
     .createTable("trainings", (table) => {
       table.increments("training_id").primary().notNullable().unique();
       table
@@ -64,16 +80,16 @@ exports.up = function (knex, Promise) {
         .inTable("users")
         .notNull()
         .onDelete("cascade");
-      table.string("category");
-      table.string("sub_category");
-      table.integer("day");
       table
         .integer("team_id")
         .references("team_id")
         .inTable("teams")
         .notNull()
         .onDelete("cascade");
+      table.string("training_type");
+      table.timestamp("target_date");
       table.json("exercises");
+      table.boolean("is_test");
       table.timestamps(false, true);
     })
     .createTable("training_videos", (table) => {
@@ -158,6 +174,7 @@ exports.down = (knex, Promise) => {
     .dropTable("training_scores")
     .dropTable("training_videos")
     .dropTable("trainings")
+    .dropTable("exercises")
     .dropTable("teams_members")
     .dropTable("teams")
     .dropTable("users")
