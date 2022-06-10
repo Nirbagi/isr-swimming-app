@@ -26,7 +26,7 @@ router.get("/general", async (ctx) => {
 router.get("/", async (ctx) => {
   const params = await get_ancmt_schema.validateAsync(ctx.request.query);
   team_id = await teamMembersQueries.getTeamIDByUserID(ctx.session.user_id);
-  params.team_id = team_id.team_id;
+  params.team_id = team_id;
   try {
     const announcements = await ancmtQueries.getAnnouncements(params);
     ctx.status = 200;
