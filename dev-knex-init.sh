@@ -11,8 +11,8 @@ echo "--------------------------------------------------------------------"
 echo "starting -- applying seeds"
 echo "--------------------------------------------------------------------"
 npx knex seed:run --specific=roles_seed.js --env development
-npx knex seed:run --specific=teams_seed.js --env development
 npx knex seed:run --specific=users_seed.js --env development
+npx knex seed:run --specific=teams_seed.js --env development
 npx knex seed:run --specific=teams_members_seed.js --env development
 npx knex seed:run --specific=trainings_seed.js --env development
 npx knex seed:run --specific=training_videos_seed.js --env development

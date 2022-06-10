@@ -4,8 +4,8 @@ call npx knex migrate:rollback --all && (
         ECHO "finished -- recreating tables"
         ECHO "starting -- applying seeds"
         call npx knex seed:run --specific=roles_seed.js --env development && (
-            call npx knex seed:run --specific=teams_seed.js --env development && (
-                call npx knex seed:run --specific=users_seed.js --env development && (
+            call npx knex seed:run --specific=users_seed.js --env development && (
+                call npx knex seed:run --specific=teams_seed.js --env development && (
                     call npx knex seed:run --specific=teams_members_seed.js --env development && (
                         call npx knex seed:run --specific=trainings_seed.js --env development && (
                             call npx knex seed:run --specific=training_videos_seed.js --env development && (

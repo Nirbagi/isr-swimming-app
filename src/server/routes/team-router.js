@@ -5,6 +5,7 @@ const joinQueries = require("../db/queries/join_queries");
 
 const {
   get_teams_schema,
+  get_coach_teams_schema,
   create_team_schema,
   update_team_schema,
   delete_team_schema,
@@ -31,9 +32,18 @@ router.get("/members", async (ctx) => {
 // TODO: fix Announcements queries in team
 router.get("/all", async (ctx) => {
   const params = await get_teams_schema.validateAsync(ctx.request.query);
-  const announcements = await teamsQueries.getTeams(params);
+  const teams = await teamsQueries.getTeams(params);
   ctx.status = 200;
-  ctx.body = announcements;
+  ctx.body = teams;
+});
+
+router.get("/coach", async (ctx) => {
+  const params = await get_coach_teams_schema.validateAsync(
+    Object.assign({}, { coach_id: ctx.session.user_id }, ctx.request.query)
+  );
+  const teams = await teamsQueries.getCoachTeams(params);
+  ctx.status = 200;
+  ctx.body = teams;
 });
 
 router.post("/add", async (ctx) => {
