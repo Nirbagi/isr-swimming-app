@@ -14,6 +14,15 @@ const get_coach_teams_schema = Joi.object({
   coach_id: Joi.number().integer().default(null),
 });
 
+const assign_user_to_team_schema = Joi.object({
+  team_id: Joi.number().integer().required(),
+  user_id: Joi.number().integer().required(),
+});
+
+const unassign_user_from_team_schema = Joi.object({
+  user_id: Joi.number().integer().required(),
+});
+
 const create_team_schema = Joi.object({
   body: Joi.string().required(),
   team_id: Joi.number().integer().default(null),
@@ -31,6 +40,8 @@ const delete_team_schema = Joi.object({
 module.exports = {
   get_teams_schema,
   get_coach_teams_schema,
+  assign_user_to_team_schema,
+  unassign_user_from_team_schema,
   create_team_schema,
   update_team_schema,
   delete_team_schema,

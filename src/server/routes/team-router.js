@@ -9,6 +9,8 @@ const {
   create_team_schema,
   update_team_schema,
   delete_team_schema,
+  assign_user_to_team_schema,
+  unassign_user_from_team_schema,
 } = require("../services/shcema_validators/teams_schemas");
 
 const router = new KoaRouter();
@@ -19,6 +21,7 @@ router.get("/", async (ctx) => {
   ctx.body = { team_id: team.team_id, team_name: team.name };
 });
 
+// TODO: fix this endpoint
 router.get("/members", async (ctx) => {
   const team_id = await teamMembersQueries.getTeamIDByUserID(
     ctx.session.user_id
@@ -44,6 +47,33 @@ router.get("/coach", async (ctx) => {
   const teams = await teamsQueries.getCoachTeams(params);
   ctx.status = 200;
   ctx.body = teams;
+});
+
+router.post("/assign", async (ctx) => {
+  const params = await assign_user_to_team_schema.validateAsync(
+    ctx.request.query
+  );
+  // first check if already assigned to team
+  user_info = await joinQueries.getUserincludeTeamInfo(params);
+  //if yes - update existing entry
+  if (user_info.team_id) {
+    assigned = await teamMembersQueries.updateUserTeam(params);
+  }
+  // if not - create new entry
+  else {
+    assigned = await teamMembersQueries.addUserToTeam(params);
+  }
+  ctx.status = 200;
+  ctx.body = assigned;
+});
+
+router.delete("/unassign", async (ctx) => {
+  const params = await unassign_user_from_team_schema.validateAsync(
+    ctx.request.query
+  );
+  await teamMembersQueries.removeUserFromTeam(params);
+  ctx.status = 200;
+  ctx.body = { status: "unassigned from team successfully." };
 });
 
 router.post("/add", async (ctx) => {

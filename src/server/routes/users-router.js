@@ -28,11 +28,12 @@ router.patch("/info", async (ctx) => {
 
 // higher authorization level required
 
-router.get("/user_info/:user_id", async (ctx) => {
+router.get("/user_info/:id_number", async (ctx) => {
   params = await get_user_info_schema.validateAsync({
-    user_id: ctx.params.user_id,
+    id_number: ctx.params.id_number,
   });
-  const user_info = await userQueries.getUserInfoByID(params.user_id);
+  // const user_info = await userQueries.getUserInfoByIDNumber(params.id_number);
+  const user_info = await joinQueries.getUserincludeTeamInfo(params);
   ctx.status = 200;
   ctx.body = user_info;
 });

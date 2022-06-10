@@ -13,8 +13,10 @@ function getUserRoleByID(user_id) {
     .then((role_id) => role_id["role_id"]);
 }
 
-function getUserInfoByID(user_id) {
+// TODO: check if needed anymore
+function getUserInfoByIDNumber(id_number) {
   return knex("users")
+    .select("user_id")
     .select("first_name")
     .select("last_name")
     .select("email")
@@ -22,7 +24,8 @@ function getUserInfoByID(user_id) {
     .select("city")
     .select("address")
     .select("zipcode")
-    .where({ user_id: parseInt(user_id) })
+    .select("id_number")
+    .where({ id_number: id_number })
     .first();
 }
 
@@ -67,7 +70,7 @@ function deleteUser(user_id) {
 module.exports = {
   getAllUsers,
   getUserRoleByID,
-  getUserInfoByID,
+  getUserInfoByIDNumber,
   addUser,
   updateUser,
   updateUserRoleID,

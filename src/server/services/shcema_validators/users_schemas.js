@@ -3,7 +3,7 @@ const router = require("koa-joi-router");
 const Joi = router.Joi;
 
 const get_user_info_schema = Joi.object({
-  user_id: Joi.number().integer().required(),
+  id_number: Joi.string().required(),
 });
 
 const get_user_role_schema = Joi.object({

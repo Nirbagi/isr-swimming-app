@@ -9,6 +9,35 @@ function getUserRoleNameID(user_id) {
     .first();
 }
 
+function getUserincludeTeamInfo(params) {
+  let where_stmt = null;
+  if (params.id_number) where_stmt = { id_number: params.id_number };
+  else where_stmt = { "users.user_id": params.user_id };
+  return knex("users")
+    .select([
+      "users.user_id",
+      "users.first_name",
+      "users.last_name",
+      "users.email",
+      "users.age",
+      "users.city",
+      "users.address",
+      "users.zipcode",
+      "users.id_number",
+      "teams_members.team_id",
+      "teams.name",
+    ])
+    .where(where_stmt)
+    .leftOuterJoin("teams_members", "teams_members.user_id", "users.user_id")
+    .leftOuterJoin("teams", "teams.team_id", "teams_members.team_id")
+    .first()
+    .then((user) => {
+      user.team_name = user.name;
+      delete user["name"];
+      return user;
+    });
+}
+
 function getTeamMembersByTeamID(team_id) {
   return knex("teams_members")
     .select([
@@ -33,6 +62,7 @@ function getTeamDetailsByUserID(user_id) {
 
 module.exports = {
   getUserRoleNameID,
+  getUserincludeTeamInfo,
   getTeamMembersByTeamID,
   getTeamDetailsByUserID,
 };

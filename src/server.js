@@ -93,6 +93,13 @@ app.use(async (ctx, next) => {
     //announcements
     "/announcements/add",
     "/announcements/edit",
+    //teams
+    "/team/all",
+    "/team/coach",
+    "/team/assign",
+    "/team/unassign",
+    "/team/add",
+    "/team/edit",
   ];
   adminCoachPaths.forEach((path) => {
     if (ctx.role_id > 2 && ctx.path.includes(path)) {
