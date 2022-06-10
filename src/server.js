@@ -96,6 +96,7 @@ app.use(async (ctx, next) => {
     //teams
     "/team/all",
     "/team/coach",
+    "/team/coach/members",
     "/team/assign",
     "/team/unassign",
     "/team/add",

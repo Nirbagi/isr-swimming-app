@@ -9,6 +9,7 @@ const {
   create_team_schema,
   update_team_schema,
   delete_team_schema,
+  get_team_members_schema,
   assign_user_to_team_schema,
   unassign_user_from_team_schema,
 } = require("../services/shcema_validators/teams_schemas");
@@ -21,14 +22,13 @@ router.get("/", async (ctx) => {
   ctx.body = { team_id: team.team_id, team_name: team.name };
 });
 
-// TODO: fix this endpoint
 router.get("/members", async (ctx) => {
   const team_id = await teamMembersQueries.getTeamIDByUserID(
     ctx.session.user_id
   );
   const members = await joinQueries.getTeamMembersByTeamID(team_id);
   ctx.status = 200;
-  ctx.body = { test: members };
+  ctx.body = members;
 });
 
 // higher authorization level required
@@ -38,6 +38,13 @@ router.get("/all", async (ctx) => {
   const teams = await teamsQueries.getTeams(params);
   ctx.status = 200;
   ctx.body = teams;
+});
+
+router.get("/coach/members", async (ctx) => {
+  const params = await get_team_members_schema.validateAsync(ctx.request.query);
+  const members = await joinQueries.getTeamMembersByTeamID(params.team_id);
+  ctx.status = 200;
+  ctx.body = members;
 });
 
 router.get("/coach", async (ctx) => {
