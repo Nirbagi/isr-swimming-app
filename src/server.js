@@ -92,6 +92,7 @@ app.use(async (ctx, next) => {
     "/videos/add",
     "/videos/edit",
     //announcements
+    "/announcements/team",
     "/announcements/add",
     "/announcements/edit",
     //teams

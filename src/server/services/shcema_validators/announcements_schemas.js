@@ -7,6 +7,12 @@ const get_ancmt_schema = Joi.object({
   take: Joi.number().integer().required(),
 });
 
+const get_team_ancmt_schema = Joi.object({
+  skip: Joi.number().integer().required(),
+  take: Joi.number().integer().required(),
+  team_id: Joi.number().integer().required(),
+});
+
 const create_ancmt_schema = Joi.object({
   body: Joi.string().required(),
   image_link: Joi.string(),
@@ -25,6 +31,7 @@ const delete_ancmt_schema = Joi.object({
 
 module.exports = {
   get_ancmt_schema,
+  get_team_ancmt_schema,
   create_ancmt_schema,
   update_ancmt_schema,
   delete_ancmt_schema,

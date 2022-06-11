@@ -3,6 +3,7 @@ const ancmtQueries = require("../db/queries/announcements");
 const teamMembersQueries = require("../db/queries/teams_members");
 const {
   get_ancmt_schema,
+  get_team_ancmt_schema,
   create_ancmt_schema,
   update_ancmt_schema,
   delete_ancmt_schema,
@@ -38,6 +39,20 @@ router.get("/", async (ctx) => {
 });
 
 // higher authorization level required
+router.get("/team/:team_id", async (ctx) => {
+  const params = await get_team_ancmt_schema.validateAsync(
+    Object.assign({}, { team_id: ctx.params.team_id }, ctx.request.query)
+  );
+  try {
+    const announcements = await ancmtQueries.getAnnouncements(params);
+    ctx.status = 200;
+    ctx.body = announcements;
+  } catch (err) {
+    console.log(err);
+    ctx.throw(500, "failed to load announcements.");
+  }
+});
+
 router.post("/add", async (ctx) => {
   const params = await create_ancmt_schema.validateAsync(ctx.request.body);
   try {
