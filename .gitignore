@@ -113,3 +113,5 @@ dist
 src/config/dev.env
 
 .DS_Store
+
+package-lock.json
