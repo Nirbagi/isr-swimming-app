@@ -11,6 +11,31 @@ const {
 
 const router = new KoaRouter();
 
+/**
+ * @swagger
+ * /announcements/general:
+ *   get:
+ *     description: Announcements intended for the general user.
+ *     tags: [Annoucements]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/skip'
+ *       - $ref: '#/parameters/take'
+ *     responses:
+ *       200:
+ *         description: Announcements list
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/GeneralAnnouncements'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
 router.get("/general", async (ctx) => {
   const params = await get_ancmt_schema.validateAsync(ctx.request.query);
   params.team_id = null;
@@ -23,7 +48,37 @@ router.get("/general", async (ctx) => {
   }
 });
 
-// TODO: add author name
+/**
+ * @swagger
+ * /announcements:
+ *   get:
+ *     description: Announcements intended for a specific team. Team will be selected based on logged in swimmer.
+ *     tags: [Annoucements]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/skip'
+ *       - $ref: '#/parameters/take'
+ *     responses:
+ *       200:
+ *         description: Announcements list.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/TeamAnnouncements'
+ *       401:
+ *         description: Not logged in or higer authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
 router.get("/", async (ctx) => {
   const params = await get_ancmt_schema.validateAsync(ctx.request.query);
   team_id = await teamMembersQueries.getTeamIDByUserID(ctx.session.user_id);
@@ -38,7 +93,40 @@ router.get("/", async (ctx) => {
   }
 });
 
-// higher authorization level required
+//-------------higher authorization level required-------------//
+
+/**
+ * @swagger
+ * /announcements/team/{team_id}:
+ *   get:
+ *     description: Announcements intended for a specific team - for coach to view announcement for one of his assigned teams. Coach or Admin authorization level is required.
+ *     tags: [Annoucements]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/skip'
+ *       - $ref: '#/parameters/take'
+ *       - $ref: '#/parameters/teamIdPath'
+ *     responses:
+ *       200:
+ *         description: Announcements list.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/TeamAnnouncements'
+ *       401:
+ *         description: Not logged in or higer authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
 router.get("/team/:team_id", async (ctx) => {
   const params = await get_team_ancmt_schema.validateAsync(
     Object.assign({}, { team_id: ctx.params.team_id }, ctx.request.query)
@@ -53,6 +141,36 @@ router.get("/team/:team_id", async (ctx) => {
   }
 });
 
+/**
+ * @swagger
+ * /announcements/add:
+ *   post:
+ *     description: Create new announcement. Coach or Admin authorization level is required.
+ *     tags: [Annoucements]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/createAnnouncement'
+ *     responses:
+ *       201:
+ *         description: Announcement created.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/CreatedAnnouncement'
+ *       401:
+ *         description: Not logged in or higer authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
 router.post("/add", async (ctx) => {
   const params = await create_ancmt_schema.validateAsync(ctx.request.body);
   try {
@@ -67,6 +185,37 @@ router.post("/add", async (ctx) => {
   }
 });
 
+/**
+ * @swagger
+ * /announcements/edit/{announcement_id}:
+ *   patch:
+ *     description: Update existing announcement. Coach or Admin authorization level is required.
+ *     tags: [Annoucements]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/announcementId'
+ *       - $ref: '#/parameters/updateAnnouncement'
+ *     responses:
+ *       200:
+ *         description: Announcement updated.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/UpdatedAnnouncement'
+ *       401:
+ *         description: Not logged in or higer authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
 router.patch("/edit/:announcement_id", async (ctx) => {
   const params = await update_ancmt_schema.validateAsync(
     Object.assign(
@@ -90,6 +239,36 @@ router.patch("/edit/:announcement_id", async (ctx) => {
   }
 });
 
+/**
+ * @swagger
+ * /announcements/edit/{announcement_id}:
+ *   delete:
+ *     description: Delete existing announcement. Coach or Admin authorization level is required.
+ *     tags: [Annoucements]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/announcementId'
+ *     responses:
+ *       200:
+ *         description: Announcement deleted.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/DeletedAnnouncement'
+ *       401:
+ *         description: Not logged in or higer authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
 router.delete("/edit/:announcement_id", async (ctx) => {
   const params = await delete_ancmt_schema.validateAsync({
     announcement_id: ctx.params.announcement_id,

@@ -7,6 +7,7 @@ const passport = require("koa-passport");
 const BodyParser = require("koa-bodyparser");
 const enforceNodePath = require("enforce-node-path");
 
+const DocsRoutes = require("./server/routes/docs-router");
 const trainingScoresRoutes = require("./server/routes/training-scores-router");
 const usersRoutes = require("./server/routes/users-router");
 const usersAuthRoutes = require("./server/routes/users-auth-router");
@@ -67,9 +68,15 @@ app.on("error", async (err, ctx) => {
 // Authentication - middleware for getting role_id before request
 app.use(async (ctx, next) => {
   const nonSecurePaths = [
+    // docs & general
+    "/v1/docs",
+    "/favicon.png",
+    // registration & auth
     "/users/auth/login",
     "/users/auth/register",
+    // announcements
     "/announcements/general",
+    // videos
     "/videos",
   ];
   if (!ctx.isAuthenticated() && !nonSecurePaths.includes(ctx.path)) {
@@ -125,6 +132,7 @@ app.use(AnnouncementsRoutes.middleware());
 app.use(VideosRoutes.middleware());
 app.use(TeamRoutes.middleware());
 app.use(ExercisesRoutes.middleware());
+app.use(DocsRoutes.middleware());
 
 app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}`);

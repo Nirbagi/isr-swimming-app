@@ -1,0 +1,118 @@
+definitions:
+  Login:
+    required:
+      - username
+      - password
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+      path:
+        type: string
+
+  GeneralAnnouncements:
+    type: array
+    items:
+      type: object
+      properties:
+        announcement_id:
+          type: int
+          example: 1
+        body:
+          type: string
+          example: "1st msg - general"
+        image_link:
+          type: string
+          example: "https://imgur.com/t/awesome/jcgCKHG"
+        author_id:
+          type: int
+          example: 1
+        team_id:
+          type: int
+          example: null
+        created_at:
+          type: date-time
+          example: "2022-06-10T12:50:16.089Z"
+        updated_at:
+          type: date-time
+          example: "2022-06-11T12:50:16.089Z"
+
+  TeamAnnouncements:
+    type: array
+    items:
+      type: object
+      properties:
+        announcement_id:
+          type: int
+          example: 1
+        body:
+          type: string
+          example: "1st msg - team"
+        image_link:
+          type: string
+          example: "https://imgur.com/t/awesome/jcgCKHG"
+        author_id:
+          type: int
+          example: 1
+        team_id:
+          type: int
+          example: 1
+        created_at:
+          type: date-time
+          example: "2022-06-10T12:50:16.089Z"
+        updated_at:
+          type: date-time
+          example: "2022-06-11T12:50:16.089Z"
+
+  CreatedAnnouncement:
+    type: object
+    properties:
+      status:
+        type: string
+        example: created
+      announcement_id:
+        type: integer
+        example: 1
+
+  UpdatedAnnouncement:
+    type: object
+    properties:
+      status:
+        type: string
+        example: updated
+      announcement_id:
+        type: integer
+        example: 1
+
+  DeletedAnnouncement:
+    type: object
+    properties:
+      status:
+        type: string
+        example: deleted
+      announcement_id:
+        type: integer
+        example: 1
+
+  # Errors
+  NotAuthenticatedError:
+    type: object
+    properties:
+      error:
+        type: string
+        example: Not Authenticated
+
+  NotAuthorizedError:
+    type: object
+    properties:
+      error:
+        type: string
+        example: Not Authorized
+
+  ServerError:
+    type: object
+    properties:
+      error:
+        type: string
+        example: Internal Server Error
