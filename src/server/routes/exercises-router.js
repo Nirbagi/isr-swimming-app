@@ -10,6 +10,31 @@ const {
 
 const router = new KoaRouter();
 
+/**
+ * @swagger
+ * /exercises/public:
+ *   get:
+ *     description: Get public exercises. Public exercises are exercises that the coaches choose to share.
+ *     tags: [Exercises]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/skip'
+ *       - $ref: '#/parameters/take'
+ *     responses:
+ *       200:
+ *         description: Public exercises.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ExercisesList'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
 router.get("/public", async (ctx) => {
   const params = await get_exercises_schema.validateAsync(ctx.request.query);
   const exercises = await exercisesQueries.getPublicExercises(params);
@@ -18,6 +43,44 @@ router.get("/public", async (ctx) => {
 });
 
 // higher authorization level required
+
+/**
+ * @swagger
+ * /exercises/add:
+ *   post:
+ *     description: Create new exercise. Coach or Admin authorization level is required.
+ *     tags: [Exercises]
+ *     produces:
+ *       - application/json
+ *     requestBody:
+ *       name: exercise_info
+ *       description: Information about the new exercise.
+ *       in: body
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/addUpdateExercise'
+ *     responses:
+ *       201:
+ *         description: Exercise created successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ExerciseCreated'
+ *       401:
+ *         description: Not logged in or higher authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
 router.post("/add", async (ctx) => {
   let params = await add_exercise_schema.validateAsync(ctx.request.body);
   params = Object.assign({}, { coach_id: ctx.session.user_id }, params);
@@ -26,6 +89,37 @@ router.post("/add", async (ctx) => {
   ctx.body = { exercise_id: exercise_id };
 });
 
+/**
+ * @swagger
+ * /exercises/coach:
+ *   get:
+ *     description: Get coach private exercises. Coach or Admin authorization level is required.
+ *     tags: [Exercises]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/skip'
+ *       - $ref: '#/parameters/take'
+ *     responses:
+ *       200:
+ *         description: Coach private exercises.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ExercisesList'
+ *       401:
+ *         description: Not logged in or higher authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
 router.get("/coach", async (ctx) => {
   let params = await get_exercises_schema.validateAsync(ctx.request.query);
   params = Object.assign({}, { coach_id: ctx.session.user_id }, params);
@@ -34,6 +128,43 @@ router.get("/coach", async (ctx) => {
   ctx.body = exercises;
 });
 
+/**
+ * @swagger
+ * /exercises/edit/{exercise_id}:
+ *   patch:
+ *     description: Update existing exercise. Coach or Admin authorization level is required.
+ *     tags: [Exercises]
+ *     produces:
+ *       - application/json
+ *     requestBody:
+ *       name: exercise_info
+ *       description: Information changed about the exercise.
+ *       in: body
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/addUpdateExercise'
+ *     responses:
+ *       200:
+ *         description: Exercise updated successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ExerciseUpdated'
+ *       401:
+ *         description: Not logged in or higher authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
 router.patch("/edit/:exercise_id", async (ctx) => {
   const params = await update_exercise_schema.validateAsync(
     Object.assign({}, { exercise_id: ctx.params.exercise_id }, ctx.request.body)
@@ -43,6 +174,36 @@ router.patch("/edit/:exercise_id", async (ctx) => {
   ctx.body = { status: "updated", exercise_id: exercise_id };
 });
 
+/**
+ * @swagger
+ * /exercises/edit/{exercise_id}:
+ *   delete:
+ *     description: Delete existing exercise. Coach or Admin authorization level is required.
+ *     tags: [Exercises]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/exerciseId'
+ *     responses:
+ *       200:
+ *         description: Exercise has been deleted.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ExerciseDeleted'
+ *       401:
+ *         description: Not logged in or higher authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
 router.delete("/edit/:exercise_id", async (ctx) => {
   const params = await delete_exercise_schema.validateAsync({
     exercise_id: ctx.params.exercise_id,

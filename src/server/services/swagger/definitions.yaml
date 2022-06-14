@@ -348,6 +348,70 @@ definitions:
         type: integer
         example: 1
 
+  # Exercises
+  ExercisesList:
+    type: array
+    items:
+      type: object
+      properties:
+        exercise_id:
+          type: int
+          example: 1
+        coach_id:
+          type: int
+          example: 1
+        name:
+          type: string
+          example: "Ex-A"
+        num_of_sets:
+          type: int
+          example: 3
+        num_of_reps:
+          type: int
+          example: 20
+        distance:
+          type: int
+          example: 0
+        notes:
+          type: string
+          example: "coach notes"
+        is_public:
+          type: boolean
+          example: true
+        created_at:
+          type: date-time
+          example: "2022-06-10T12:50:16.089Z"
+        updated_at:
+          type: date-time
+          example: "2022-06-11T12:50:16.089Z"
+
+  ExerciseCreated:
+    type: object
+    properties:
+      exercise_id:
+        type: integer
+        example: 1
+
+  ExerciseUpdated:
+    type: object
+    properties:
+      status:
+        type: string
+        example: "updated"
+      exercise_id:
+        type: integer
+        example: 1
+
+  ExerciseDeleted:
+    type: object
+    properties:
+      status:
+        type: string
+        example: "deleted"
+      exercise_id:
+        type: integer
+        example: 1
+
   # Errors
   NotAuthenticatedError:
     type: object

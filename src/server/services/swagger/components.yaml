@@ -156,3 +156,20 @@ components:
           type: integer
         description:
           type: string
+
+    # Exercise
+    addUpdateExercise:
+      type: object
+      properties:
+        name:
+          type: string
+        num_of_sets:
+          type: integer
+        num_of_reps:
+          type: integer
+        distance:
+          type: integer
+        notes:
+          type: string
+        is_public:
+          type: boolean

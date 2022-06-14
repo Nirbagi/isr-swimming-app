@@ -6,6 +6,8 @@ tags:
   - name: Announcements
     description: ISR Swimming Association announcements.
   - name: TrainingVideos
-    description: ISR Swimming Association training videos.
+    description: ISR Swimming Association training videos library.
   - name: Teams
     description: ISR Swimming Association swimmers teams.
+  - name: Exercises
+    description: ISR Swimming Association exercises library.

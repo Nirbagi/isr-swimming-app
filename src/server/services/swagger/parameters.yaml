@@ -87,3 +87,10 @@ parameters:
     in: path
     required: true
     type: integer
+
+  exerciseId:
+    name: exercise_id
+    description: The internal identification number of an excercise.
+    in: path
+    required: true
+    type: integer
