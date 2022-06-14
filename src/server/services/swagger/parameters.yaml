@@ -58,3 +58,25 @@ parameters:
     in: path
     required: true
     type: integer
+
+  # Videos
+  videoCategory:
+    name: category
+    description: Video category.
+    in: query
+    required: false
+    type: string
+
+  videoSubCategory:
+    name: sub_category
+    description: Video sub-category.
+    in: query
+    required: false
+    type: string
+
+  videoId:
+    name: video_id
+    description: The internal identification number of video.
+    in: path
+    required: true
+    type: integer

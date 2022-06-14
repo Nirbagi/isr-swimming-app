@@ -172,6 +172,67 @@ definitions:
         type: integer
         example: 1
 
+  # Announcements
+  TrainingVideos:
+    type: array
+    items:
+      type: object
+      properties:
+        video_id:
+          type: int
+          example: 1
+        training_id:
+          type: int
+          example: 1
+        name:
+          type: string
+          example: "example video"
+        category:
+          type: string
+          example: "example category"
+        sub_category:
+          type: string
+          example: "example sub-category"
+        link:
+          type: string
+          example: "https://www.youtube.com/watch?v=rRXrXtac_uI"
+        created_at:
+          type: date-time
+          example: "2022-06-10T12:50:16.089Z"
+        updated_at:
+          type: date-time
+          example: "2022-06-11T12:50:16.089Z"
+
+  AddedVideo:
+    type: object
+    properties:
+      status:
+        type: string
+        example: created
+      video_id:
+        type: integer
+        example: 1
+
+  UpdatedVideo:
+    type: object
+    properties:
+      status:
+        type: string
+        example: updated
+      video_id:
+        type: integer
+        example: 1
+
+  DeletedVideo:
+    type: object
+    properties:
+      status:
+        type: string
+        example: deleted
+      video_id:
+        type: integer
+        example: 1
+
   # Errors
   NotAuthenticatedError:
     type: object

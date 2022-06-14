@@ -107,3 +107,37 @@ components:
           type: string
         image_link:
           type: string
+
+    # Videos
+    addVideo:
+      type: object
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+        sub_category:
+          type: string
+        link:
+          type: string
+        training_id:
+          type: integer
+      required:
+        - name
+        - category
+        - sub_category
+        - link
+
+    updateVideo:
+      type: object
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+        sub_category:
+          type: string
+        link:
+          type: string
+        training_id:
+          type: integer

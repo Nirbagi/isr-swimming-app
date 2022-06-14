@@ -5,3 +5,5 @@ tags:
     description: Users management and information.
   - name: Announcements
     description: ISR Swimming Association announcements.
+  - name: TrainingVideos
+    description: ISR Swimming Association training videos.
