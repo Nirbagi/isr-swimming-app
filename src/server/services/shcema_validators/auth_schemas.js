@@ -9,6 +9,10 @@ const auth_schema = Joi.object({
   password: Joi.string()
     .pattern(new RegExp("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$"))
     .required(),
+  age: Joi.number().integer().required(),
+  city: Joi.string().required(),
+  address: Joi.string().required(),
+  zipcode: Joi.string().required(),
   email: Joi.string().email().required(),
   id_number: Joi.string().required(),
 });

@@ -11,12 +11,81 @@ definitions:
         type: string
       path:
         type: string
+
   # General
   Status:
     type: object
     properties:
       status:
         type: string
+
+  # User
+  UserInfo:
+    type: object
+    properties:
+      user_id:
+        type: integer
+        example: 1
+      username:
+        type: string
+        example: israel123
+      first_name:
+        type: string
+        example: "Israel"
+      last_name:
+        type: string
+        example: "Israeli"
+      email:
+        type: string
+        example: "email@example.com"
+      age:
+        type: integer
+        example: 18
+      city:
+        type: string
+        example: "example city"
+      address:
+        type: "example address"
+        example: 1
+      zipcode:
+        type: string
+        example: "123456"
+      id_number:
+        type: string
+        example: "316371242"
+
+  UserUpdated:
+    type: object
+    properties:
+      status:
+        type: string
+        example: udpated.
+      user_id:
+        type: integer
+        example: 1
+
+  UserRoleInformation:
+    type: object
+    properties:
+      role_id:
+        type: integer
+        example: 1
+      role:
+        type: string
+        example: "admin"
+
+  UserRoleUpdated:
+    type: object
+    properties:
+      status:
+        type: string
+        example: updated
+      user_id:
+        type: integer
+        example: 1
+      role_id:
+        type: integer
+        example: 1
 
   # Announcements
   GeneralAnnouncements:

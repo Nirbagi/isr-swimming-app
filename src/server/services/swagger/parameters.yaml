@@ -14,6 +14,28 @@ parameters:
     required: true
     type: integer
 
+  # Users
+  idNumber:
+    name: id_number
+    description: The Isreali identification number of a user.
+    in: path
+    required: true
+    type: integer
+
+  userId:
+    name: user_id
+    description: The internal identification number of a user.
+    in: path
+    required: true
+    type: integer
+
+  roleId:
+    name: role_id
+    description: The internal identification number of a role.
+    in: query
+    required: true
+    type: integer
+
   # Team
   teamIdQuery:
     name: team_id

@@ -1,5 +1,7 @@
 tags:
+  - name: UserAuthentication
+    description: User registration and authentication.
+  - name: Users
+    description: Users management and information.
   - name: Announcements
     description: ISR Swimming Association announcements.
-  - name: UserAuthentication
-    description: User registration and login.

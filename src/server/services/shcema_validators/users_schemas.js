@@ -26,7 +26,7 @@ const admin_edit_user_schema = Joi.object({
   first_name: Joi.string(),
   last_name: Joi.string(),
   age: Joi.number().integer(),
-  email: Joi.string(),
+  email: Joi.string().email(),
   address: Joi.string(),
   city: Joi.string(),
   zipcode: Joi.number().integer(),

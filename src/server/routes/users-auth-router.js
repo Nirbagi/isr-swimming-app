@@ -12,13 +12,13 @@ const router = new KoaRouter();
  * @swagger
  * /users/auth/register:
  *   post:
- *     description: User login.
+ *     description: User registration.
  *     tags: [UserAuthentication]
  *     produces:
  *       - application/json
  *     requestBody:
- *       name: user_login
- *       description: Username and password are required for logging in.
+ *       name: user_info
+ *       description: User info for registration.
  *       required: true
  *       content:
  *         application/json:

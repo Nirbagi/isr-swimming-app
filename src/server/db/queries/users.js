@@ -17,6 +17,7 @@ function getUserRoleByID(user_id) {
 function getUserInfoByID(user_id) {
   return knex("users")
     .select("user_id")
+    .select("username")
     .select("first_name")
     .select("last_name")
     .select("email")
