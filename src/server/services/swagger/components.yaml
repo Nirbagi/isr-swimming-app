@@ -1,0 +1,57 @@
+components:
+  schemas:
+    # User Auth
+    userLogin:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+
+    userRegistration:
+      type: object
+      properties:
+        username:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        password:
+          type: string
+        email:
+          type: string
+        id_number:
+          type: string
+      required:
+        - username
+        - first_name
+        - last_name
+        - password
+        - email
+        - id_number
+
+    # Announcements
+    createAnnouncement:
+      type: object
+      properties:
+        body:
+          type: string
+        image_link:
+          type: string
+        team_id:
+          type: integer
+      required:
+        - body
+
+    updateAnnouncement:
+      type: object
+      properties:
+        body:
+          type: string
+        image_link:
+          type: string

@@ -36,33 +36,3 @@ parameters:
     in: path
     required: true
     type: integer
-
-  createAnnouncement:
-    name: announcement
-    description: The content of the announcement.
-    in: body
-    required: true
-    schema:
-      type: object
-      properties:
-        body:
-          type: string
-        image_link:
-          type: string
-        team_id:
-          type: integer
-      required:
-        - body
-
-  updateAnnouncement:
-    name: announcement
-    description: The content of the announcement.
-    in: body
-    required: false
-    schema:
-      type: object
-      properties:
-        body:
-          type: string
-        image_link:
-          type: string

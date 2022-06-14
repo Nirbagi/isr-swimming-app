@@ -8,6 +8,36 @@ const {
 
 const router = new KoaRouter();
 
+/**
+ * @swagger
+ * /users/auth/register:
+ *   post:
+ *     description: User login.
+ *     tags: [UserAuthentication]
+ *     produces:
+ *       - application/json
+ *     requestBody:
+ *       name: user_login
+ *       description: Username and password are required for logging in.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/userRegistration'
+ *     responses:
+ *       200:
+ *         description: registered successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Status'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
 router.post("/register", async (ctx) => {
   const params = await auth_schema.validateAsync(ctx.request.body);
   try {
@@ -28,6 +58,36 @@ router.post("/register", async (ctx) => {
   })(ctx);
 });
 
+/**
+ * @swagger
+ * /users/auth/login:
+ *   post:
+ *     description: User login.
+ *     tags: [UserAuthentication]
+ *     produces:
+ *       - application/json
+ *     requestBody:
+ *       name: user_login
+ *       description: Username and password are required for logging in.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/userLogin'
+ *     responses:
+ *       200:
+ *         description: Successfully logged in.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Status'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
 router.post("/login", async (ctx) => {
   await login_schema.validateAsync(ctx.request.body);
   return passport.authenticate("local", (err, user, info, status) => {
@@ -42,6 +102,28 @@ router.post("/login", async (ctx) => {
   })(ctx);
 });
 
+/**
+ * @swagger
+ * /users/auth/logout:
+ *   post:
+ *     description: User logout.
+ *     tags: [UserAuthentication]
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully logged out.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Status'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
 router.post("/logout", async (ctx) => {
   if (ctx.isAuthenticated()) {
     ctx.logout();

@@ -31,7 +31,6 @@ function getCoachExercises(params) {
   return knex("exercises")
     .orderBy("created_at", "desc")
     .where({ coach_id: parseInt(params.coach_id) })
-    .orWhere({ is_public: true })
     .paginate({
       perPage: params.take,
       currentPage: params.skip,

@@ -16,7 +16,7 @@ const router = new KoaRouter();
  * /announcements/general:
  *   get:
  *     description: Announcements intended for the general user.
- *     tags: [Annoucements]
+ *     tags: [Announcements]
  *     produces:
  *       - application/json
  *     parameters:
@@ -53,7 +53,7 @@ router.get("/general", async (ctx) => {
  * /announcements:
  *   get:
  *     description: Announcements intended for a specific team. Team will be selected based on logged in swimmer.
- *     tags: [Annoucements]
+ *     tags: [Announcements]
  *     produces:
  *       - application/json
  *     parameters:
@@ -67,7 +67,7 @@ router.get("/general", async (ctx) => {
  *             schema:
  *               $ref: '#/definitions/TeamAnnouncements'
  *       401:
- *         description: Not logged in or higer authorization level is required.
+ *         description: Not logged in or higher authorization level is required.
  *         content:
  *           application/json:
  *             schema:
@@ -100,7 +100,7 @@ router.get("/", async (ctx) => {
  * /announcements/team/{team_id}:
  *   get:
  *     description: Announcements intended for a specific team - for coach to view announcement for one of his assigned teams. Coach or Admin authorization level is required.
- *     tags: [Annoucements]
+ *     tags: [Announcements]
  *     produces:
  *       - application/json
  *     parameters:
@@ -115,7 +115,7 @@ router.get("/", async (ctx) => {
  *             schema:
  *               $ref: '#/definitions/TeamAnnouncements'
  *       401:
- *         description: Not logged in or higer authorization level is required.
+ *         description: Not logged in or higher authorization level is required.
  *         content:
  *           application/json:
  *             schema:
@@ -146,11 +146,18 @@ router.get("/team/:team_id", async (ctx) => {
  * /announcements/add:
  *   post:
  *     description: Create new announcement. Coach or Admin authorization level is required.
- *     tags: [Annoucements]
+ *     tags: [Announcements]
  *     produces:
  *       - application/json
- *     parameters:
- *       - $ref: '#/parameters/createAnnouncement'
+ *     requestBody:
+ *       name: announcement
+ *       description: The content of the announcement.
+ *       in: body
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/createAnnouncement'
  *     responses:
  *       201:
  *         description: Announcement created.
@@ -159,7 +166,7 @@ router.get("/team/:team_id", async (ctx) => {
  *             schema:
  *               $ref: '#/definitions/CreatedAnnouncement'
  *       401:
- *         description: Not logged in or higer authorization level is required.
+ *         description: Not logged in or higher authorization level is required.
  *         content:
  *           application/json:
  *             schema:
@@ -190,12 +197,20 @@ router.post("/add", async (ctx) => {
  * /announcements/edit/{announcement_id}:
  *   patch:
  *     description: Update existing announcement. Coach or Admin authorization level is required.
- *     tags: [Annoucements]
+ *     tags: [Announcements]
  *     produces:
  *       - application/json
  *     parameters:
  *       - $ref: '#/parameters/announcementId'
- *       - $ref: '#/parameters/updateAnnouncement'
+ *     requestBody:
+ *       name: announcement
+ *       description: The content of the announcement.
+ *       in: body
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/updateAnnouncement'
  *     responses:
  *       200:
  *         description: Announcement updated.
@@ -204,7 +219,7 @@ router.post("/add", async (ctx) => {
  *             schema:
  *               $ref: '#/definitions/UpdatedAnnouncement'
  *       401:
- *         description: Not logged in or higer authorization level is required.
+ *         description: Not logged in or higher authorization level is required.
  *         content:
  *           application/json:
  *             schema:
@@ -244,7 +259,7 @@ router.patch("/edit/:announcement_id", async (ctx) => {
  * /announcements/edit/{announcement_id}:
  *   delete:
  *     description: Delete existing announcement. Coach or Admin authorization level is required.
- *     tags: [Annoucements]
+ *     tags: [Announcements]
  *     produces:
  *       - application/json
  *     parameters:
@@ -257,7 +272,7 @@ router.patch("/edit/:announcement_id", async (ctx) => {
  *             schema:
  *               $ref: '#/definitions/DeletedAnnouncement'
  *       401:
- *         description: Not logged in or higer authorization level is required.
+ *         description: Not logged in or higher authorization level is required.
  *         content:
  *           application/json:
  *             schema:
