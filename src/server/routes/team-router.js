@@ -418,7 +418,7 @@ router.delete("/edit/:team_id", async (ctx) => {
   const params = await delete_team_schema.validateAsync({
     team_id: ctx.params.team_id,
   });
-  const team = await teamsQueries.deleteTeam(params.team_id);
+  const team = await teamsQueries.deleteTeam(params);
   ctx.status = 200;
   ctx.body = { status: "deleted", team_id: team.team_id };
 });

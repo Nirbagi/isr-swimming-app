@@ -49,10 +49,10 @@ function updateTeam(params) {
     });
 }
 
-function deleteTeam() {
+function deleteTeam(params) {
   return knex("teams")
     .del()
-    .where({ team_id: parseInt(team_id) })
+    .where({ team_id: parseInt(params.team_id) })
     .returning("*")
     .then((team) => {
       return team[0];
