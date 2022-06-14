@@ -37,7 +37,6 @@ exports.up = function (knex, Promise) {
       table.integer("min_age");
       table.integer("max_age");
       table.string("description");
-
       table.timestamps(false, true);
     })
     .createTable("teams_members", (table) => {

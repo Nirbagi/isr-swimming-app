@@ -8,7 +8,10 @@ function addUserToTeam(params) {
       created_at: knex.fn.now(),
       updated_at: knex.fn.now(),
     })
-    .returning("*");
+    .returning("*")
+    .then((assigned) => {
+      return assigned[0];
+    });
 }
 
 function updateUserTeam(params) {
@@ -16,13 +19,19 @@ function updateUserTeam(params) {
   return knex("teams_members")
     .update(params)
     .where({ user_id: params.user_id })
-    .returning("*");
+    .returning("*")
+    .then((assigned) => {
+      return assigned[0];
+    });
 }
 
 function removeUserFromTeam(params) {
   return knex("teams_members")
     .del()
-    .where({ user_id: parseInt(params.user_id) })
+    .where({
+      user_id: parseInt(params.user_id),
+      team_id: parseInt(params.team_id),
+    })
     .returning("*");
 }
 

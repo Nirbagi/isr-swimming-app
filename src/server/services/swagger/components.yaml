@@ -141,3 +141,18 @@ components:
           type: string
         training_id:
           type: integer
+
+    # Teams
+    createUpdateTeam:
+      type: object
+      properties:
+        coach_id:
+          type: integer
+        name:
+          type: string
+        min_age:
+          type: integer
+        max_age:
+          type: integer
+        description:
+          type: string

@@ -1,14 +1,14 @@
 const knex = require("../connection");
 
-function createTeam(team_data) {
+function createTeam(params) {
+  params.created_at = knex.fn.now();
+  params.updated_at = knex.fn.now();
   return knex("teams")
-    .insert({
-      team_name: team_data.team_name,
-      description: team_data.description,
-      created_at: knex.fn.now(),
-      updated_at: knex.fn.now(),
-    })
-    .returning("*");
+    .insert(params)
+    .returning("*")
+    .then((team) => {
+      return team[0];
+    });
 }
 
 function getTeamByTeamID(team_id) {
@@ -39,18 +39,24 @@ function getCoachTeams(params) {
     .then((results) => results["data"]);
 }
 
-function updateTeam(team_id, team_data) {
+function updateTeam(params) {
   return knex("teams")
-    .update(team_data)
-    .where({ team_id: parseInt(team_id) })
-    .returning("*");
+    .update(params)
+    .where({ team_id: parseInt(params.team_id) })
+    .returning("*")
+    .then((team) => {
+      return team[0];
+    });
 }
 
 function deleteTeam() {
   return knex("teams")
     .del()
     .where({ team_id: parseInt(team_id) })
-    .returning("*");
+    .returning("*")
+    .then((team) => {
+      return team[0];
+    });
 }
 
 module.exports = {

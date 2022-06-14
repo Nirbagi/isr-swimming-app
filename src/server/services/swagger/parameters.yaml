@@ -29,6 +29,13 @@ parameters:
     required: true
     type: integer
 
+  userIdQuery:
+    name: user_id
+    description: The internal identification number of a user.
+    in: query
+    required: true
+    type: integer
+
   roleId:
     name: role_id
     description: The internal identification number of a role.

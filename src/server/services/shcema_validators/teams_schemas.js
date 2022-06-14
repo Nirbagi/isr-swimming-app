@@ -18,34 +18,36 @@ const get_team_members_schema = Joi.object({
   team_id: Joi.number().integer().required(),
 });
 
-const assign_user_to_team_schema = Joi.object({
+const assign_unassign_to_team_schema = Joi.object({
   team_id: Joi.number().integer().required(),
   user_id: Joi.number().integer().required(),
 });
 
-const unassign_user_from_team_schema = Joi.object({
-  user_id: Joi.number().integer().required(),
-});
-
 const create_team_schema = Joi.object({
-  body: Joi.string().required(),
-  team_id: Joi.number().integer().default(null),
+  coach_id: Joi.number().integer().required(),
+  name: Joi.string().required(),
+  min_age: Joi.number().integer().required(),
+  max_age: Joi.number().integer().required(),
+  description: Joi.string().required(),
 });
 
 const update_team_schema = Joi.object({
-  announcement_id: Joi.number().integer().required(),
-  body: Joi.string().required(),
+  team_id: Joi.number().integer().required(),
+  coach_id: Joi.number().integer(),
+  name: Joi.string(),
+  min_age: Joi.number().integer(),
+  max_age: Joi.number().integer(),
+  description: Joi.string(),
 });
 
 const delete_team_schema = Joi.object({
-  announcement_id: Joi.number().integer().required(),
+  team_id: Joi.number().integer().required(),
 });
 
 module.exports = {
   get_teams_schema,
   get_coach_teams_schema,
-  assign_user_to_team_schema,
-  unassign_user_from_team_schema,
+  assign_unassign_to_team_schema,
   get_team_members_schema,
   create_team_schema,
   update_team_schema,
