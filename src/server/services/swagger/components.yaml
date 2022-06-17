@@ -43,7 +43,6 @@ components:
         - age
         - city
         - address
-        - zipcode
         - email
         - id_number
 

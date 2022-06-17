@@ -1,6 +1,4 @@
-const router = require("koa-joi-router");
-
-const Joi = router.Joi;
+const { Joi } = require("koa-joi-router");
 
 const auth_schema = Joi.object({
   username: Joi.string().min(3).max(255).required(),
@@ -12,7 +10,7 @@ const auth_schema = Joi.object({
   age: Joi.number().integer().required(),
   city: Joi.string().required(),
   address: Joi.string().required(),
-  zipcode: Joi.string().required(),
+  zipcode: Joi.string(),
   email: Joi.string().email().required(),
   id_number: Joi.string().required(),
 });
