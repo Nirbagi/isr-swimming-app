@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Nirbagi/isr-swimming-app#readme",
   "dependencies": {
+    "@joi/date": "^2.1.0",
     "@koa/cors": "^3.1.0",
     "@koa/router": "^10.1.1",
     "bcrypt": "^5.0.1",
@@ -36,6 +37,7 @@
     "koa-passport": "^4.1.4",
     "koa-session": "^6.2.0",
     "koa2-swagger-ui": "^5.5.1",
+    "moment": "^2.29.3",
     "objection": "^3.0.1",
     "passport-local": "^1.0.0",
     "pg": "^8.7.3",
