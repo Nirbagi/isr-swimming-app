@@ -1,6 +1,4 @@
-const router = require("koa-joi-router");
-
-const Joi = router.Joi;
+const { Joi } = require("koa-joi-router");
 
 const add_exercise_schema = Joi.object({
   name: Joi.string(),

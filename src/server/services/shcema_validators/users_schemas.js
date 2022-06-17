@@ -1,6 +1,4 @@
-const router = require("koa-joi-router");
-
-const Joi = router.Joi;
+const { Joi } = require("koa-joi-router");
 
 const get_user_info_schema = Joi.object({
   id_number: Joi.string().required(),

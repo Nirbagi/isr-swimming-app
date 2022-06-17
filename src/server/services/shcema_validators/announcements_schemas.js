@@ -1,6 +1,4 @@
-const router = require("koa-joi-router");
-
-const Joi = router.Joi;
+const { Joi } = require("koa-joi-router");
 
 const get_ancmt_schema = Joi.object({
   skip: Joi.number().integer().required(),
