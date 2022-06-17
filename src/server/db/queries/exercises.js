@@ -13,7 +13,10 @@ function getExerciseByID(params) {
   return knex("exercises")
     .select("*")
     .where({ exercise_id: parseInt(params.exercise_id) })
-    .returning("*");
+    .returning("*")
+    .then((data) => {
+      return data[0];
+    });
 }
 
 function getPublicExercises(params) {
