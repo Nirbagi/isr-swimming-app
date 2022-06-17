@@ -193,7 +193,7 @@ components:
           type: object
           properties:
             ex_order_position:
-              type: int
+              type: integer
         is_test:
           type: boolean
       required:
