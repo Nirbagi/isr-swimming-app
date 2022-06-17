@@ -94,3 +94,10 @@ parameters:
     in: path
     required: true
     type: integer
+
+  trainingId:
+    name: training_id
+    description: The internal identification number of an training/test.
+    in: path
+    required: true
+    type: integer

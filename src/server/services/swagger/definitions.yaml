@@ -412,6 +412,178 @@ definitions:
         type: integer
         example: 1
 
+  # Trainings
+  TrainingInfo:
+    type: object
+    properties:
+      training_id:
+        type: integer
+        example: 1
+      coach_id:
+        type: integer
+        example: 1
+      team_id:
+        type: integer
+        example: 1
+      training_type:
+        type: string
+        example: "dry"
+      target_date:
+        type: string
+        example: "2022-01-01"
+      exercises:
+        type: object
+        properties:
+          exercise_order_position:
+            type: object
+            properties:
+              exercise_id:
+                type: int
+                example: 1
+              coach_id:
+                type: int
+                example: 1
+              name:
+                type: string
+                example: "Ex-A"
+              num_of_sets:
+                type: int
+                example: 3
+              num_of_reps:
+                type: int
+                example: 20
+              distance:
+                type: int
+                example: 0
+              notes:
+                type: string
+                example: "coach notes"
+              is_public:
+                type: boolean
+                example: true
+              created_at:
+                type: date-time
+                example: "2022-06-10T12:50:16.089Z"
+              updated_at:
+                type: date-time
+                example: "2022-06-11T12:50:16.089Z"
+        is_test:
+          type: boolean
+          example: false
+        created_at:
+          type: date-time
+          example: "2022-06-20T12:50:16.089Z"
+        updated_at:
+          type: date-time
+          example: "2022-06-21T12:50:16.089Z"
+
+  CoachTrainingsList:
+    type: array
+    items:
+      type: object
+      properties:
+        training_id:
+          type: integer
+          example: 1
+        coach_id:
+          type: integer
+          example: 1
+        team_id:
+          type: integer
+          example: 1
+        training_type:
+          type: string
+          example: "dry"
+        target_date:
+          type: string
+          example: "2022-01-01"
+        exercises:
+          type: object
+          properties:
+            exercise_order_position:
+              type: object
+              properties:
+                exercise_id:
+                  type: int
+                  example: 1
+                coach_id:
+                  type: int
+                  example: 1
+                name:
+                  type: string
+                  example: "Ex-A"
+                num_of_sets:
+                  type: int
+                  example: 3
+                num_of_reps:
+                  type: int
+                  example: 20
+                distance:
+                  type: int
+                  example: 0
+                notes:
+                  type: string
+                  example: "coach notes"
+                is_public:
+                  type: boolean
+                  example: true
+                created_at:
+                  type: date-time
+                  example: "2022-06-10T12:50:16.089Z"
+                updated_at:
+                  type: date-time
+                  example: "2022-06-11T12:50:16.089Z"
+        is_test:
+          type: boolean
+          example: false
+        created_at:
+          type: date-time
+          example: "2022-06-20T12:50:16.089Z"
+        updated_at:
+          type: date-time
+          example: "2022-06-21T12:50:16.089Z"
+
+  NoScheduledTrainig:
+    type: object
+    properties:
+      info:
+        type: string
+        example: "there is no next training scheduled."
+
+  NoConfiguredTrainigs:
+    type: object
+    properties:
+      info:
+        type: string
+        example: "there are'nt any configured trainings / tests."
+
+  TrainingCreated:
+    type: object
+    properties:
+      training_id:
+        type: integer
+        example: 1
+
+  TrainingUpdated:
+    type: object
+    properties:
+      status:
+        type: string
+        example: updated
+      training_id:
+        type: integer
+        example: 1
+
+  TrainingDeleted:
+    type: object
+    properties:
+      status:
+        type: string
+        example: deleted
+      training_id:
+        type: integer
+        example: 1
+
   # Errors
   NotAuthenticatedError:
     type: object

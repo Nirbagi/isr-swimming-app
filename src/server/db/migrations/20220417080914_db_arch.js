@@ -86,7 +86,7 @@ exports.up = function (knex, Promise) {
         .notNull()
         .onDelete("cascade");
       table.string("training_type");
-      table.timestamp("target_date");
+      table.date("target_date");
       table.json("exercises");
       table.boolean("is_test");
       table.timestamps(false, true);

@@ -172,3 +172,48 @@ components:
           type: string
         is_public:
           type: boolean
+
+    # Trainings
+    expandTrainingsExercises:
+      type: object
+      properties:
+        ex_order_position:
+          type: integer
+
+    addTraining:
+      type: object
+      properties:
+        team_id:
+          type: integer
+        training_type:
+          type: string
+        target_date:
+          type: string
+        exercises:
+          type: object
+          properties:
+            ex_order_position:
+              type: int
+        is_test:
+          type: boolean
+      required:
+        - team_id
+        - training_type
+        - target_date
+
+    updateTraining:
+      type: object
+      properties:
+        team_id:
+          type: integer
+        training_type:
+          type: string
+        target_date:
+          type: string
+        exercises:
+          type: object
+          properties:
+            ex_order_position:
+              type: int
+        is_test:
+          type: boolean

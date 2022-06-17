@@ -11,3 +11,5 @@ tags:
     description: ISR Swimming Association swimmers teams.
   - name: Exercises
     description: ISR Swimming Association exercises library.
+  - name: Trainings
+    description: Trainings and Tests management for ISRSA coaches.
