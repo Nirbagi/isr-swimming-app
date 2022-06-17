@@ -110,6 +110,9 @@ router.get("/exercises/expand", async (ctx) => {
  *     tags: [Trainings]
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/skip'
+ *       - $ref: '#/parameters/take'
  *     responses:
  *       200:
  *         description: List of configured trainings / tests.
