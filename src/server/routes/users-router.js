@@ -5,6 +5,7 @@ const joinQueries = require("../db/queries/join_queries");
 const {
   get_user_info_schema,
   get_coache_info_schema,
+  get_user_by_user_id_schema,
   get_user_role_schema,
   edit_role_schema,
   edit_user_schema,
@@ -118,6 +119,46 @@ router.get("/coaches", async (ctx) => {
   const coaches_info = await joinQueries.getCoachesincludeTeamInfo(params);
   ctx.status = 200;
   ctx.body = coaches_info;
+});
+
+/**
+ * @swagger
+ * /users/user_info/{user_id}:
+ *   get:
+ *     description: Get user information by internal ID number. Coach or Admin authorization level is required.
+ *     tags: [Users]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/userId'
+ *     responses:
+ *       200:
+ *         description: User information.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/UserInfo'
+ *       401:
+ *         description: Not logged in or higher authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
+router.get("/user_info/:user_id", async (ctx) => {
+  params = await get_user_info_schema.validateAsync({
+    user_id: ctx.params.user_id,
+  });
+  // const user_info = await userQueries.getUserInfoByIDNumber(params.id_number);
+  const user_info = await joinQueries.getUserincludeTeamInfo(params);
+  ctx.status = 200;
+  ctx.body = user_info;
 });
 
 /**
