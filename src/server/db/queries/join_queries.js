@@ -51,12 +51,11 @@ function getCoachesincludeTeamInfo() {
       "users.address",
       "users.zipcode",
       "users.id_number",
-      "teams_members.team_id",
+      "teams.team_id",
       "teams.name",
     ])
     .where({ "users.role_id": 2 })
-    .leftOuterJoin("teams_members", "teams_members.user_id", "users.user_id")
-    .leftOuterJoin("teams", "teams.team_id", "teams_members.team_id")
+    .leftOuterJoin("teams", "teams.coach_id", "users.user_id")
     .then((coaches) => {
       for (idx in coaches) {
         idx = parseInt(idx);
