@@ -213,8 +213,8 @@ router.get("/coach", async (ctx) => {
  *       - application/json
  *     parameters:
  *       - $ref: '#/parameters/coachId'
- *       - $ref: '#/parameters/take'
  *       - $ref: '#/parameters/skip'
+ *       - $ref: '#/parameters/take'
  *     responses:
  *       200:
  *         description: Teams.
