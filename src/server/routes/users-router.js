@@ -152,10 +152,9 @@ router.get("/coaches", async (ctx) => {
  *               $ref: '#/definitions/ServerError'
  */
 router.get("/user_info/:user_id", async (ctx) => {
-  params = await get_user_info_schema.validateAsync({
+  params = await get_user_by_user_id_schema.validateAsync({
     user_id: ctx.params.user_id,
   });
-  // const user_info = await userQueries.getUserInfoByIDNumber(params.id_number);
   const user_info = await joinQueries.getUserincludeTeamInfo(params);
   ctx.status = 200;
   ctx.body = user_info;
@@ -195,7 +194,6 @@ router.get("/user_info/:id_number", async (ctx) => {
   params = await get_user_info_schema.validateAsync({
     id_number: ctx.params.id_number,
   });
-  // const user_info = await userQueries.getUserInfoByIDNumber(params.id_number);
   const user_info = await joinQueries.getUserincludeTeamInfo(params);
   ctx.status = 200;
   ctx.body = user_info;
