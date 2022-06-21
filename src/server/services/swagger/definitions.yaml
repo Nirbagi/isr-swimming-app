@@ -54,6 +54,89 @@ definitions:
         type: string
         example: "316371242"
 
+UserInfoIncludeTeam:
+    type: object
+    properties:
+      user_id:
+        type: integer
+        example: 1
+      username:
+        type: string
+        example: israel123
+      first_name:
+        type: string
+        example: "Israel"
+      last_name:
+        type: string
+        example: "Israeli"
+      email:
+        type: string
+        example: "email@example.com"
+      age:
+        type: integer
+        example: 18
+      city:
+        type: string
+        example: "example city"
+      address:
+        type: "example address"
+        example: 1
+      zipcode:
+        type: string
+        example: "123456"
+      id_number:
+        type: string
+        example: "316371242"
+      team_id:
+        type: integer
+        example: 1
+      team_name:
+        type: string
+        example: "example team"
+
+  CoachesInfo:
+    type: array
+    items:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: israel123
+        first_name:
+          type: string
+          example: "Israel"
+        last_name:
+          type: string
+          example: "Israeli"
+        email:
+          type: string
+          example: "email@example.com"
+        age:
+          type: integer
+          example: 18
+        city:
+          type: string
+          example: "example city"
+        address:
+          type: "example address"
+          example: 1
+        zipcode:
+          type: string
+          example: "123456"
+        id_number:
+          type: string
+          example: "316371242"
+        team_id:
+          type: integer
+          example: 1
+        team_name:
+          type: string
+          example: "example team"
+
+
   UserUpdated:
     type: object
     properties:

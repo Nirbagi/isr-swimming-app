@@ -38,6 +38,36 @@ function getUserincludeTeamInfo(params) {
     });
 }
 
+function getCoachesincludeTeamInfo() {
+  return knex("users")
+    .select([
+      "users.user_id",
+      "users.role_id",
+      "users.first_name",
+      "users.last_name",
+      "users.email",
+      "users.age",
+      "users.city",
+      "users.address",
+      "users.zipcode",
+      "users.id_number",
+      "teams_members.team_id",
+      "teams.name",
+    ])
+    .where({ "users.role_id": 2 })
+    .leftOuterJoin("teams_members", "teams_members.user_id", "users.user_id")
+    .leftOuterJoin("teams", "teams.team_id", "teams_members.team_id")
+    .then((coaches) => {
+      for (idx in coaches) {
+        idx = parseInt(idx);
+        coaches[idx].team_name = coaches[idx].name;
+        delete coaches[idx]["name"];
+        delete coaches[idx]["role_id"];
+      }
+      return coaches;
+    });
+}
+
 function getTeamMembersByTeamID(team_id) {
   return knex("teams_members")
     .select([
@@ -63,6 +93,7 @@ function getTeamDetailsByUserID(user_id) {
 module.exports = {
   getUserRoleNameID,
   getUserincludeTeamInfo,
+  getCoachesincludeTeamInfo,
   getTeamMembersByTeamID,
   getTeamDetailsByUserID,
 };

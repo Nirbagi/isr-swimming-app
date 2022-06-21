@@ -4,6 +4,11 @@ const get_user_info_schema = Joi.object({
   id_number: Joi.string().required(),
 });
 
+const get_coache_info_schema = Joi.object({
+  skip: Joi.number().integer().required(),
+  take: Joi.number().integer().required(),
+});
+
 const get_user_role_schema = Joi.object({
   user_id: Joi.number().integer().required(),
 });
@@ -39,6 +44,7 @@ const edit_role_schema = Joi.object({
 module.exports = {
   admin_edit_user_schema,
   get_user_info_schema,
+  get_coache_info_schema,
   get_user_role_schema,
   edit_user_schema,
   edit_role_schema,
