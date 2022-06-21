@@ -217,3 +217,41 @@ components:
               type: integer
         is_test:
           type: boolean
+
+    # Scores
+    addTrainingScores:
+      type: array
+      items:
+        type: object
+        properties:
+          exercise_id:
+            type: integer
+          time_duration:
+            type: integer
+          sets:
+            type: integer
+          reps:
+            type: integer
+          weight:
+            type: number
+          is_test:
+            type: string
+        required:
+          - exercise_id
+          - is_test
+
+    updateScore:
+      type: object
+      properties:
+        exercise_id:
+          type: integer
+        time_duration:
+          type: integer
+        sets:
+          type: integer
+        reps:
+          type: integer
+        weight:
+          type: float
+        is_test:
+          type: string

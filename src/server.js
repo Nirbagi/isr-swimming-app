@@ -8,7 +8,7 @@ const BodyParser = require("koa-bodyparser");
 const enforceNodePath = require("enforce-node-path");
 
 const DocsRoutes = require("./server/routes/docs-router");
-const trainingScoresRoutes = require("./server/routes/training-scores-router");
+const scoresRoutes = require("./server/routes/scores-router");
 const usersRoutes = require("./server/routes/users-router");
 const usersAuthRoutes = require("./server/routes/users-auth-router");
 const AnnouncementsRoutes = require("./server/routes/announcements-router");
@@ -128,7 +128,7 @@ app.use(async (ctx, next) => {
 // app.use(indexRoutes.routes()).use(indexRoutes.allowedMethods());
 app.use(usersAuthRoutes.middleware());
 app.use(usersRoutes.middleware());
-app.use(trainingScoresRoutes.middleware());
+app.use(scoresRoutes.middleware());
 app.use(AnnouncementsRoutes.middleware());
 app.use(VideosRoutes.middleware());
 app.use(TeamRoutes.middleware());

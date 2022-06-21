@@ -108,3 +108,25 @@ parameters:
     in: path
     required: true
     type: integer
+
+  # Score
+  scoreId:
+    name: ex_score_id
+    description: The internal identification number of an score.
+    in: path
+    required: true
+    type: integer
+
+  scoreTypeQuery:
+    name: score_type
+    description: "Can be one of the following: time_duration, weight, sets, reps."
+    in: query
+    required: true
+    type: string
+
+  isTestScoreQuery:
+    name: is_test
+    description: indicates wether the recorded score is test score or train score.
+    in: query
+    required: false
+    type: string

@@ -666,6 +666,50 @@ definitions:
         type: integer
         example: 1
 
+  # Scores
+  GetExScores:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          type: int
+          example: 1
+      dates:
+        type: array
+        items:
+          type: int
+          example: "2022-06-21T19:59:02.352Z"
+
+  AddedScores:
+    type: object
+    properties:
+      added_scors:
+        type: array
+        items:
+          type: int
+          example: 1
+
+  ScoreUpdated:
+    type: object
+    properties:
+      status:
+        type: string
+        example: "score updated"
+      ex_score_id:
+        type: int
+        example: 1
+
+  ScoreDeleted:
+    type: object
+    properties:
+      status:
+        type: string
+        example: "score deleted"
+      ex_score_id:
+        type: int
+        example: 1
+
   # Errors
   UserAssignedError:
     type: object

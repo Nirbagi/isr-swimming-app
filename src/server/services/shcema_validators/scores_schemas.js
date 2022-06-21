@@ -1,0 +1,41 @@
+const { Joi } = require("koa-joi-router");
+
+const add_score_schema = Joi.array().items(
+  Joi.object({
+    exercise_id: Joi.number().integer().required(),
+    time_duration: Joi.number().integer().default(0),
+    sets: Joi.number().integer().default(0),
+    reps: Joi.number().integer().default(0),
+    weight: Joi.number().precision(2).default(0),
+    is_test: Joi.boolean().required(),
+  })
+);
+
+const get_ex_scores_schema = Joi.object({
+  exercise_id: Joi.number().integer().required(),
+  score_type: Joi.string()
+    .required()
+    .valid("time_duration", "weight", "sets", "reps"),
+  is_test: Joi.string(),
+});
+
+const update_score_schema = Joi.object({
+  ex_score_id: Joi.number().integer().required(),
+  exercise_id: Joi.number().integer(),
+  time_duration: Joi.number().integer(),
+  sets: Joi.number().integer(),
+  reps: Joi.number().integer(),
+  weight: Joi.number().precision(2),
+  is_test: Joi.boolean(),
+});
+
+const delete_score_schema = Joi.object({
+  ex_score_id: Joi.number().integer().required(),
+});
+
+module.exports = {
+  add_score_schema,
+  get_ex_scores_schema,
+  update_score_schema,
+  delete_score_schema,
+};
