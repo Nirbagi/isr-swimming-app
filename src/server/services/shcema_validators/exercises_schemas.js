@@ -1,12 +1,12 @@
 const { Joi } = require("koa-joi-router");
 
 const add_exercise_schema = Joi.object({
-  name: Joi.string(),
-  num_of_sets: Joi.number().integer(),
-  num_of_reps: Joi.number().integer(),
+  name: Joi.string().required(),
+  num_of_sets: Joi.number().integer().default(0),
+  num_of_reps: Joi.number().integer().default(0),
   distance: Joi.number().integer().default(0),
   notes: Joi.string(),
-  is_public: Joi.boolean(),
+  is_public: Joi.boolean().required(),
 });
 
 const get_exercises_schema = Joi.object({
