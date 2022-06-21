@@ -43,6 +43,13 @@ parameters:
     required: true
     type: integer
 
+  coachId:
+    name: coach_id
+    description: The internal identification number of a coach.
+    in: path
+    required: true
+    type: integer
+
   # Team
   teamIdQuery:
     name: team_id

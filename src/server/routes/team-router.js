@@ -205,6 +205,47 @@ router.get("/coach", async (ctx) => {
 
 /**
  * @swagger
+ * /team/coach/{coach_id}:
+ *   get:
+ *     description: Get team assigned to specific coach. Admin authorization level is required.
+ *     tags: [Teams]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/coachId'
+ *       - $ref: '#/parameters/take'
+ *       - $ref: '#/parameters/skip'
+ *     responses:
+ *       200:
+ *         description: Teams.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Teamsinformation'
+ *       401:
+ *         description: Not logged in or higher authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
+router.get("/coach/:coach_id", async (ctx) => {
+  const params = await get_coach_teams_schema.validateAsync(
+    Object.assign({}, { coach_id: ctx.params.coach_id }, ctx.request.query)
+  );
+  const teams = await teamsQueries.getCoachTeams(params);
+  ctx.status = 200;
+  ctx.body = teams;
+});
+
+/**
+ * @swagger
  * /team/assign:
  *   post:
  *     description: Assign user to team. Coach or Admin authorization level is required.
