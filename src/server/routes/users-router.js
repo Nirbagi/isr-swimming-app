@@ -1,5 +1,6 @@
 const KoaRouter = require("koa-joi-router");
 const userQueries = require("../db/queries/users");
+const teamQueries = require("../db/queries/teams");
 const joinQueries = require("../db/queries/join_queries");
 const {
   get_user_info_schema,
@@ -263,6 +264,12 @@ router.get("/role/:user_id", async (ctx) => {
  *           application/json:
  *             schema:
  *               $ref: '#/definitions/UserRoleUpdated'
+ *       400:
+ *         description: User or coach assigned to team.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
  *       401:
  *         description: Not logged in or higher authorization level is required.
  *         content:
@@ -280,6 +287,25 @@ router.patch("/role/edit/:user_id", async (ctx) => {
   const params = await edit_role_schema.validateAsync(
     Object.assign({}, { user_id: ctx.params.user_id }, ctx.request.query)
   );
+  current_role_id = await userQueries.getUserRoleByID(params.user_id);
+  if (current_role_id == 3) {
+    // check if not belong to any team
+    const user_info = await joinQueries.getUserincludeTeamInfo(params);
+    if (user_info.team_id)
+      ctx.throw(
+        400,
+        "User assigned to team. Unassign him before trying to change role."
+      );
+  }
+  if (current_role_id == 2) {
+    // check if not coach of any team
+    const coach_info = teamQueries.getCoachTeams({ coach_id: params.user_id });
+    if (coach_info)
+      ctx.throw(
+        400,
+        "Coach assigned as a team coach. Unassign him before trying to change role."
+      );
+  }
   const updated = await userQueries.updateUserRoleID(params);
   ctx.status = 200;
   ctx.body = {
