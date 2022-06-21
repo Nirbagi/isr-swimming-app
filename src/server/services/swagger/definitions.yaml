@@ -54,7 +54,7 @@ definitions:
         type: string
         example: "316371242"
 
-UserInfoIncludeTeam:
+  UserInfoIncludeTeam:
     type: object
     properties:
       user_id:
@@ -135,7 +135,6 @@ UserInfoIncludeTeam:
         team_name:
           type: string
           example: "example team"
-
 
   UserUpdated:
     type: object
