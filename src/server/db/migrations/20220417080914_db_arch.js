@@ -104,8 +104,8 @@ exports.up = function (knex, Promise) {
       table.string("link");
       table.timestamps(false, true);
     })
-    .createTable("training_scores", (table) => {
-      table.increments("trainig_score_id").primary().notNullable().unique();
+    .createTable("exercises_scores", (table) => {
+      table.increments("ex_score_id").primary().notNullable().unique();
       table
         .integer("user_id")
         .references("user_id")
@@ -113,38 +113,16 @@ exports.up = function (knex, Promise) {
         .notNull()
         .onDelete("cascade");
       table
-        .integer("training_id")
-        .references("training_id")
-        .inTable("trainings")
+        .integer("exercise_id")
+        .references("exercise_id")
+        .inTable("exercises")
         .notNull()
         .onDelete("cascade");
-      table.json("scores");
-      table.timestamps(false, true);
-    })
-    .createTable("tournaments", (table) => {
-      table.increments("tournament_id").primary().notNullable().unique();
-      table.string("name");
-      table.string("location");
-      table.string("category");
-      table.timestamp("datetime");
-      table.timestamps(false, true);
-    })
-    .createTable("tournament_scores", (table) => {
-      table.increments("tournament_score_id").primary().notNullable().unique();
-      table
-        .integer("user_id")
-        .references("user_id")
-        .inTable("users")
-        .notNull()
-        .onDelete("cascade");
-      table
-        .integer("tournament_id")
-        .references("tournament_id")
-        .inTable("tournaments")
-        .notNull()
-        .onDelete("cascade");
-      table.integer("rank");
-      table.integer("score");
+      table.integer("time_duration");
+      table.integer("sets");
+      table.integer("reps");
+      table.float("weight");
+      table.boolean("is_test");
       table.timestamps(false, true);
     })
     .createTable("announcements", (table) => {
@@ -168,9 +146,7 @@ exports.up = function (knex, Promise) {
 exports.down = (knex, Promise) => {
   return knex.schema
     .dropTable("announcements")
-    .dropTable("tournament_scores")
-    .dropTable("tournaments")
-    .dropTable("training_scores")
+    .dropTable("exercises_scores")
     .dropTable("training_videos")
     .dropTable("trainings")
     .dropTable("exercises")
