@@ -14,6 +14,11 @@ const get_trainings_schema = Joi.object({
   take: Joi.number().integer().required(),
 });
 
+const get_past_trainings_schema = Joi.object({
+  skip: Joi.number().integer().required(),
+  take: Joi.number().integer().required(),
+});
+
 const update_training_schema = Joi.object({
   training_id: Joi.number().integer(),
   team_id: Joi.number().integer(),
@@ -30,6 +35,7 @@ const delete_training_schema = Joi.object({
 module.exports = {
   add_training_schema,
   get_trainings_schema,
+  get_past_trainings_schema,
   update_training_schema,
   delete_training_schema,
 };

@@ -12,6 +12,7 @@ const {
   add_training_schema,
   update_training_schema,
   get_trainings_schema,
+  get_past_trainings_schema,
   delete_training_schema,
 } = require("../services/shcema_validators/trainings_schemas");
 
@@ -98,6 +99,59 @@ router.get("/next", async (ctx) => {
 router.get("/exercises/expand", async (ctx) => {
   ctx.status = 200;
   ctx.body = await expandExercises(ctx.request.body);
+});
+
+/**
+ * @swagger
+ * /trainings/past:
+ *   get:
+ *     description: Get list of past trainings / tests of a trainee (including information about them)
+ *     tags: [Trainings]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/skip'
+ *       - $ref: '#/parameters/take'
+ *     responses:
+ *       200:
+ *         description: List of past trainings / tests.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/CoachTrainingsList'
+ *       204:
+ *         description: There are'nt any past trainings / tests.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NoConfiguredTrainigs'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
+router.get("/past", async (ctx) => {
+  let params = await get_past_trainings_schema.validateAsync(ctx.request.query);
+  params.team_id = await teamMembersQueries.getTeamIDByUserID(
+    ctx.session.user_id
+  );
+  let trainings = await trainingsQueries.getPastTrainings(params);
+  if (trainings) {
+    trainings = await expandMultipleTrainingsExercises(trainings);
+    for (tr in trainings) {
+      mt = moment(trainings[tr].target_date);
+      trainings[tr].target_date = moment(
+        trainings[tr].target_date.setHours(mt.utcOffset() / 60)
+      ).format("YYYY-MM-DD");
+    }
+    ctx.status = 200;
+    ctx.body = trainings;
+  } else {
+    ctx.status = 204;
+    ctx.body = { info: "there are'nt any past trainings / tests" };
+  }
 });
 
 // higher authorization level required

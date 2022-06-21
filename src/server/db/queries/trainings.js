@@ -17,6 +17,18 @@ function getNextTraining(team_id) {
     .first();
 }
 
+function getPastTrainings(params) {
+  return knex("trainings")
+    .orderBy("target_date", "desc")
+    .where({ team_id: params.team_id })
+    .where("target_date", "<", knex.fn.now())
+    .paginate({
+      perPage: params.take,
+      currentPage: params.skip,
+    })
+    .then((results) => results["data"]);
+}
+
 function getCoachTrainings(params) {
   return knex("trainings")
     .orderBy("updated_at", "desc")
@@ -48,6 +60,7 @@ function deleteTraining(params) {
 module.exports = {
   addTraining,
   getNextTraining,
+  getPastTrainings,
   getCoachTrainings,
   updateTraining,
   deleteTraining,
