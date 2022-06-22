@@ -198,9 +198,6 @@ router.get("/past", async (ctx) => {
  */
 router.get("/past/tests", async (ctx) => {
   let params = await get_past_tests_schema.validateAsync(ctx.request.query);
-  params.team_id = await teamMembersQueries.getTeamIDByUserID(
-    ctx.session.user_id
-  );
   params.is_test = true;
   let trainings = await trainingsQueries.getPastTrainings(params);
   if (trainings) {
