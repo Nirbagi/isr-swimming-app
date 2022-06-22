@@ -20,7 +20,7 @@ function getNextTraining(team_id) {
 function getPastTrainings(params) {
   return knex("trainings")
     .orderBy("target_date", "desc")
-    .where({ team_id: params.team_id, is_test: false })
+    .where({ team_id: params.team_id, is_test: params.is_test })
     .where("target_date", "<", knex.fn.now())
     .paginate({
       perPage: params.take,

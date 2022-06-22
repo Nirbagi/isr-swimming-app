@@ -13,6 +13,7 @@ const {
   update_training_schema,
   get_trainings_schema,
   get_past_trainings_schema,
+  get_past_tests_schema,
   delete_training_schema,
 } = require("../services/shcema_validators/trainings_schemas");
 
@@ -105,7 +106,7 @@ router.get("/exercises/expand", async (ctx) => {
  * @swagger
  * /trainings/past:
  *   get:
- *     description: Get list of past trainings / tests of a trainee (including information about them)
+ *     description: Get list of past trainings of a trainee (including information about them)
  *     tags: [Trainings]
  *     produces:
  *       - application/json
@@ -114,13 +115,13 @@ router.get("/exercises/expand", async (ctx) => {
  *       - $ref: '#/parameters/take'
  *     responses:
  *       200:
- *         description: List of past trainings / tests.
+ *         description: List of past trainings.
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/definitions/CoachTrainingsList'
  *       204:
- *         description: There are'nt any past trainings / tests.
+ *         description: There are'nt any past trainings.
  *         content:
  *           application/json:
  *             schema:
@@ -137,6 +138,7 @@ router.get("/past", async (ctx) => {
   params.team_id = await teamMembersQueries.getTeamIDByUserID(
     ctx.session.user_id
   );
+  params.is_test = false;
   let trainings = await trainingsQueries.getPastTrainings(params);
   if (trainings) {
     trainings = await expandMultipleTrainingsExercises(trainings);
@@ -155,6 +157,67 @@ router.get("/past", async (ctx) => {
 });
 
 // higher authorization level required
+
+/**
+ * @swagger
+ * /trainings/past/tests:
+ *   get:
+ *     description: Get list of past tests of a trainee (including information about them)
+ *     tags: [Trainings]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/skip'
+ *       - $ref: '#/parameters/take'
+ *       - $ref: '#/parameters/team_id'
+ *     responses:
+ *       200:
+ *         description: List of past tests.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/CoachTrainingsList'
+ *       204:
+ *         description: There are'nt any past trainings / tests.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NoConfiguredTrainigs'
+ *       401:
+ *         description: Not logged in or higher authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
+router.get("/past/tests", async (ctx) => {
+  let params = await get_past_tests_schema.validateAsync(ctx.request.query);
+  params.team_id = await teamMembersQueries.getTeamIDByUserID(
+    ctx.session.user_id
+  );
+  params.is_test = true;
+  let trainings = await trainingsQueries.getPastTrainings(params);
+  if (trainings) {
+    trainings = await expandMultipleTrainingsExercises(trainings);
+    for (tr in trainings) {
+      mt = moment(trainings[tr].target_date);
+      trainings[tr].target_date = moment(
+        trainings[tr].target_date.setHours(mt.utcOffset() / 60)
+      ).format("YYYY-MM-DD");
+    }
+    ctx.status = 200;
+    ctx.body = trainings;
+  } else {
+    ctx.status = 204;
+    ctx.body = { info: "there are'nt any past trainings / tests" };
+  }
+});
 
 /**
  * @swagger
@@ -180,6 +243,12 @@ router.get("/past", async (ctx) => {
  *           application/json:
  *             schema:
  *               $ref: '#/definitions/NoConfiguredTrainigs'
+ *       401:
+ *         description: Not logged in or higher authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
  *       500:
  *         description: Internal server error.
  *         content:
@@ -232,6 +301,12 @@ router.get("/coach", async (ctx) => {
  *           application/json:
  *             schema:
  *               $ref: '#/definitions/TrainingCreated'
+ *       401:
+ *         description: Not logged in or higher authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
  *       500:
  *         description: Internal server error.
  *         content:
@@ -273,6 +348,12 @@ router.post("/add", async (ctx) => {
  *           application/json:
  *             schema:
  *               $ref: '#/definitions/TrainingUpdated'
+ *       401:
+ *         description: Not logged in or higher authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
  *       500:
  *         description: Internal server error.
  *         content:
@@ -306,6 +387,12 @@ router.patch("/edit/:training_id", async (ctx) => {
  *           application/json:
  *             schema:
  *               $ref: '#/definitions/TrainingDeleted'
+ *       401:
+ *         description: Not logged in or higher authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
  *       500:
  *         description: Internal server error.
  *         content:
