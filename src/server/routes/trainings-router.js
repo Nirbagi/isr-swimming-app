@@ -50,7 +50,7 @@ router.get("/next", async (ctx) => {
   const team_id = await teamMembersQueries.getTeamIDByUserID(
     ctx.session.user_id
   );
-  const training = await trainingsQueries.getNextTraining(team_id);
+  let training = await trainingsQueries.getNextTraining(team_id);
   if (training) {
     training.exercises = await expandExercises(training.exercises);
     mt = moment(training.target_date);
