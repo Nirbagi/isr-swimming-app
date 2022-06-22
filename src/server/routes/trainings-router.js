@@ -169,7 +169,7 @@ router.get("/past", async (ctx) => {
  *     parameters:
  *       - $ref: '#/parameters/skip'
  *       - $ref: '#/parameters/take'
- *       - $ref: '#/parameters/team_id'
+ *       - $ref: '#/parameters/teamIdQuery'
  *     responses:
  *       200:
  *         description: List of past tests.
