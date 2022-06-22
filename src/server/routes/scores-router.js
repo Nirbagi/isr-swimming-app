@@ -3,6 +3,7 @@ const scoresQueries = require("../db/queries/scores");
 const { ExtractScoresArrays } = require("../services/scores");
 
 const {
+  validate_user,
   add_score_schema,
   get_ex_scores_schema,
   update_score_schema,
@@ -96,6 +97,58 @@ router.post("/add", async (ctx) => {
 
 /**
  * @swagger
+ * /scores/coach/add:
+ *   post:
+ *     description: add training exercises scores for specific user.
+ *     tags: [Scores]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/userIdQuery'
+ *     requestBody:
+ *       name: trainings_exercises_scores
+ *       description: exercises scores based on time_duration / sets / reps / weight and indication wether belongs to test or not.
+ *       in: body
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/addTrainingScores'
+ *     responses:
+ *       200:
+ *         description: list of the added score_ids.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/AddedScores'
+ *       401:
+ *         description: Not logged in or higher authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
+router.post("/coach/add", async (ctx) => {
+  const user_id = await validate_user.validateAsync(ctx.request.query);
+  let training_params = await add_score_schema.validateAsync(ctx.request.body);
+  let scores = [];
+  for (idx in training_params) {
+    let params = training_params[idx];
+    params = Object.assign({}, { user_id: user_id }, params);
+    scores.push(await scoresQueries.addScore(params));
+  }
+  ctx.status = 201;
+  ctx.body = { added_scores: scores };
+});
+
+/**
+ * @swagger
  * /scores/edit/{ex_score_id}:
  *   patch:
  *     description: update exercise submitted score.
@@ -120,6 +173,12 @@ router.post("/add", async (ctx) => {
  *           application/json:
  *             schema:
  *               $ref: '#/definitions/ScoreUpdated'
+ *       401:
+ *         description: Not logged in or higher authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
  *       500:
  *         description: Internal server error.
  *         content:
@@ -153,6 +212,12 @@ router.patch("/edit/:ex_score_id", async (ctx) => {
  *           application/json:
  *             schema:
  *               $ref: '#/definitions/ScoreDeleted'
+ *       401:
+ *         description: Not logged in or higher authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
  *       500:
  *         description: Internal server error.
  *         content:
