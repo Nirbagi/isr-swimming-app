@@ -147,7 +147,7 @@ router.patch("/edit/:ex_score_id", async (ctx) => {
  *     parameters:
  *       - $ref: '#/parameters/scoreId'
  *     responses:
- *       200:
+ *       201:
  *         description: Score deleted successfully.
  *         content:
  *           application/json:
