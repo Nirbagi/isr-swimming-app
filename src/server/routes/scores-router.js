@@ -68,7 +68,7 @@ router.get("/ex/:exercise_id", async (ctx) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/definitions/GetExScores'
+ *               $ref: '#/definitions/GetTrainingScoreSubmitted'
  *       500:
  *         description: Internal server error.
  *         content:

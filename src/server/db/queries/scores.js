@@ -22,7 +22,7 @@ function getExScoresByUserID(params) {
 
 function getTrainingExist(params) {
   return knex("exercises_scores")
-    .update(params)
+    .select("*")
     .where({ training_id: params.training_id, user_id: params.user_id })
     .first();
 }

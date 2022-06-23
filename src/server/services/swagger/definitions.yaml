@@ -667,6 +667,14 @@ definitions:
         example: 1
 
   # Scores
+
+  GetTrainingScoreSubmitted:
+    type: object
+    properties:
+      is_submitted:
+        type: boolean
+        example: true
+
   GetExScores:
     type: object
     properties:

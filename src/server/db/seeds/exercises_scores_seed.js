@@ -5,6 +5,7 @@ exports.seed = (knex, Promise) => {
       return knex("exercises_scores").insert([
         {
           user_id: 5,
+          training_id: 1,
           exercise_id: 1,
           time_duration: 0,
           sets: 2,
@@ -16,6 +17,7 @@ exports.seed = (knex, Promise) => {
         },
         {
           user_id: 5,
+          training_id: 1,
           exercise_id: 3,
           time_duration: 100,
           sets: 2,
@@ -27,6 +29,7 @@ exports.seed = (knex, Promise) => {
         },
         {
           user_id: 5,
+          training_id: 1,
           exercise_id: 5,
           time_duration: 0,
           sets: 3,
@@ -38,6 +41,7 @@ exports.seed = (knex, Promise) => {
         },
         {
           user_id: 6,
+          training_id: 2,
           exercise_id: 2,
           time_duration: 0,
           sets: 2,
@@ -49,6 +53,7 @@ exports.seed = (knex, Promise) => {
         },
         {
           user_id: 6,
+          training_id: 2,
           exercise_id: 3,
           time_duration: 100,
           sets: 2,
@@ -60,6 +65,7 @@ exports.seed = (knex, Promise) => {
         },
         {
           user_id: 6,
+          training_id: 2,
           exercise_id: 5,
           time_duration: 0,
           sets: 3,
@@ -71,6 +77,7 @@ exports.seed = (knex, Promise) => {
         },
         {
           user_id: 7,
+          training_id: 3,
           exercise_id: 3,
           time_duration: 0,
           sets: 2,
@@ -82,6 +89,7 @@ exports.seed = (knex, Promise) => {
         },
         {
           user_id: 7,
+          training_id: 3,
           exercise_id: 4,
           time_duration: 100,
           sets: 2,
@@ -93,6 +101,7 @@ exports.seed = (knex, Promise) => {
         },
         {
           user_id: 7,
+          training_id: 3,
           exercise_id: 5,
           time_duration: 0,
           sets: 3,
