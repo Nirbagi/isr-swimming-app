@@ -15,11 +15,11 @@ parameters:
     type: integer
 
   # Users
-  idNumber:
+  idNumberQuery:
     name: id_number
     description: The Isreali identification number of a user.
-    in: path
-    required: true
+    in: query
+    required: false
     type: integer
 
   userId:
@@ -34,6 +34,13 @@ parameters:
     description: The internal identification number of a user.
     in: query
     required: true
+    type: integer
+
+  userIdQueryNoReq:
+    name: user_id
+    description: The internal identification number of a user.
+    in: query
+    required: false
     type: integer
 
   roleId:

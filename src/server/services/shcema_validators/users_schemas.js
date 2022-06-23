@@ -1,11 +1,8 @@
 const { Joi } = require("koa-joi-router");
 
 const get_user_info_schema = Joi.object({
-  id_number: Joi.string().required(),
-});
-
-const get_user_by_user_id_schema = Joi.object({
-  user_id: Joi.string().required(),
+  id_number: Joi.string(),
+  user_id: Joi.string(),
 });
 
 const get_coache_info_schema = Joi.object({
@@ -48,7 +45,6 @@ const edit_role_schema = Joi.object({
 module.exports = {
   admin_edit_user_schema,
   get_user_info_schema,
-  get_user_by_user_id_schema,
   get_coache_info_schema,
   get_user_role_schema,
   edit_user_schema,
