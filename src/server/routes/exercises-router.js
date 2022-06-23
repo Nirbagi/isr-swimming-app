@@ -1,14 +1,46 @@
 const KoaRouter = require("koa-joi-router");
 const exercisesQueries = require("../db/queries/exercises");
+const joinQueries = require("../db/queries/join_queries");
 
 const {
   add_exercise_schema,
   update_exercise_schema,
   get_exercises_schema,
+  get_exp_exercises_schema,
   delete_exercise_schema,
 } = require("../services/shcema_validators/exercises_schemas");
 
 const router = new KoaRouter();
+
+/**
+ * @swagger
+ * /exercises:
+ *   get:
+ *     description: Get all exercises trainee has done until now.
+ *     tags: [Exercises]
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: exercises names & ids list.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ExpExercisesList'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
+router.get("/", async (ctx) => {
+  const exercises = await joinQueries.getExperiencedExercises({
+    user_id: ctx.session.user_id,
+  });
+  ctx.status = 200;
+  ctx.body = exercises;
+});
 
 /**
  * @swagger
@@ -35,12 +67,12 @@ const router = new KoaRouter();
  *             schema:
  *               $ref: '#/definitions/ServerError'
  */
-router.get("/public", async (ctx) => {
-  const params = await get_exercises_schema.validateAsync(ctx.request.query);
-  const exercises = await exercisesQueries.getPublicExercises(params);
-  ctx.status = 200;
-  ctx.body = exercises;
-});
+// router.get("/public", async (ctx) => {
+//   const params = await get_exercises_schema.validateAsync(ctx.request.query);
+//   const exercises = await exercisesQueries.getPublicExercises(params);
+//   ctx.status = 200;
+//   ctx.body = exercises;
+// });
 
 // higher authorization level required
 
@@ -124,6 +156,45 @@ router.get("/coach", async (ctx) => {
   let params = await get_exercises_schema.validateAsync(ctx.request.query);
   params = Object.assign({}, { coach_id: ctx.session.user_id }, params);
   const exercises = await exercisesQueries.getCoachExercises(params);
+  ctx.status = 200;
+  ctx.body = exercises;
+});
+
+/**
+ * @swagger
+ * /exercises/coach/trainee:
+ *   get:
+ *     description: Get all exercises specific trainee has done until now. Coach authorization level is required.
+ *     tags: [Exercises]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/userIdQuery'
+ *     responses:
+ *       200:
+ *         description: exercises names & ids list.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ExpExercisesList'
+ *       401:
+ *         description: Not logged in or higher authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
+router.get("/coach/trainee", async (ctx) => {
+  const params = await get_exp_exercises_schema.validateAsync(
+    ctx.request.query
+  );
+  const exercises = await joinQueries.getExperiencedExercises(params);
   ctx.status = 200;
   ctx.body = exercises;
 });

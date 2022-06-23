@@ -14,6 +14,10 @@ const get_exercises_schema = Joi.object({
   take: Joi.number().integer().required(),
 });
 
+const get_exp_exercises_schema = Joi.object({
+  user_id: Joi.number().integer().required(),
+});
+
 const update_exercise_schema = Joi.object({
   exercise_id: Joi.number().integer(),
   name: Joi.string(),
@@ -31,6 +35,7 @@ const delete_exercise_schema = Joi.object({
 module.exports = {
   add_exercise_schema,
   get_exercises_schema,
+  get_exp_exercises_schema,
   update_exercise_schema,
   delete_exercise_schema,
 };

@@ -89,10 +89,24 @@ function getTeamDetailsByUserID(user_id) {
     .returning("*");
 }
 
+function getExperiencedExercises(params) {
+  return knex("exercises_scores")
+    .select(["exercises_scores.exercise_id", "exercises.name"])
+    .distinct()
+    .where({ user_id: parseInt(params.user_id) })
+    .leftOuterJoin(
+      "exercises",
+      "exercises.exercise_id",
+      "exercises_scores.exercise_id"
+    )
+    .returning("*");
+}
+
 module.exports = {
   getUserRoleNameID,
   getUserincludeTeamInfo,
   getCoachesincludeTeamInfo,
   getTeamMembersByTeamID,
   getTeamDetailsByUserID,
+  getExperiencedExercises,
 };

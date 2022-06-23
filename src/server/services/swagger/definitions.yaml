@@ -467,6 +467,18 @@ definitions:
           type: date-time
           example: "2022-06-11T12:50:16.089Z"
 
+  ExpExercisesList:
+    type: array
+    items:
+      type: object
+      properties:
+        exercise_id:
+          type: int
+          example: 1
+        name:
+          type: string
+          example: "Ex-A"
+
   ExerciseCreated:
     type: object
     properties:
