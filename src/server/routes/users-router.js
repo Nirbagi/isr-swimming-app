@@ -124,7 +124,7 @@ router.get("/coaches", async (ctx) => {
  * @swagger
  * /users/user_info:
  *   get:
- *     description: Get user information by internal ID number / Israeli ID number. Coach or Admin authorization level is required.
+ *     description: Get user information by internal ID number / Israeli ID number. In case of both parameters being supplied - id_number will be dismissed. Coach or Admin authorization level is required.
  *     tags: [Users]
  *     produces:
  *       - application/json
@@ -138,6 +138,12 @@ router.get("/coaches", async (ctx) => {
  *           application/json:
  *             schema:
  *               $ref: '#/definitions/UserInfo'
+ *       400:
+ *         description: Internal User ID or Israeli iD Number is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/MissingIDError'
  *       401:
  *         description: Not logged in or higher authorization level is required.
  *         content:
@@ -153,6 +159,14 @@ router.get("/coaches", async (ctx) => {
  */
 router.get("/user_info", async (ctx) => {
   params = await get_user_info_schema.validateAsync(ctx.request.query);
+  if (params.user_id && params.id_number) {
+    delete params["id_number"];
+  }
+  if (!(params.user_id || params.id_number)) {
+    ctx.status = 400;
+    ctx.body = { error: "user_id or id_number is required." };
+    return;
+  }
   const user_info = await joinQueries.getUserincludeTeamInfo(params);
   ctx.status = 200;
   ctx.body = user_info;

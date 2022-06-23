@@ -738,6 +738,13 @@ definitions:
         type: string
         example: User assigned to team. Unassign him before trying to change role.
 
+  MissingIDError:
+    type: object
+    properties:
+      error:
+        type: string
+        example: user_id or id_number is required.
+
   NotAuthenticatedError:
     type: object
     properties:
