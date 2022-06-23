@@ -26,6 +26,15 @@ const get_ex_scores_schema = Joi.object({
   is_test: Joi.string(),
 });
 
+const get_coach_ex_scores_schema = Joi.object({
+  user_id: Joi.number().integer().required(),
+  exercise_id: Joi.number().integer().required(),
+  score_type: Joi.string()
+    .required()
+    .valid("time_duration", "weight", "sets", "reps"),
+  is_test: Joi.string(),
+});
+
 const get_training_submitted_schema = Joi.object({
   training_id: Joi.number().integer(),
   user_id: Joi.number().integer(),
@@ -50,6 +59,7 @@ module.exports = {
   validate_user,
   add_score_schema,
   get_ex_scores_schema,
+  get_coach_ex_scores_schema,
   get_training_submitted_schema,
   update_score_schema,
   delete_score_schema,

@@ -6,6 +6,7 @@ const {
   validate_user,
   add_score_schema,
   get_ex_scores_schema,
+  get_coach_ex_scores_schema,
   get_training_submitted_schema,
   update_score_schema,
   delete_score_schema,
@@ -180,6 +181,45 @@ router.get("/coach/trainings/submitted", async (ctx) => {
   ctx.status = 200;
   if (training) ctx.body = { is_submitted: true };
   else ctx.body = { is_submitted: false };
+});
+
+/**
+ * @swagger
+ * /scores/coach/ex/{exercise_id}:
+ *   get:
+ *     description: Get exercise recorded scores based on time_duration / sets / reps / weight.
+ *     tags: [Scores]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/userIdQuery'
+ *       - $ref: '#/parameters/exerciseId'
+ *       - $ref: '#/parameters/scoreTypeQuery'
+ *       - $ref: '#/parameters/isTestScoreQuery'
+ *     responses:
+ *       200:
+ *         description: exercises recorded scores and dates of recording.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/GetExScores'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
+router.get("/coach/ex/:exercise_id", async (ctx) => {
+  let params = await get_coach_ex_scores_schema.validateAsync(
+    Object.assign({}, ctx.request.query, {
+      exercise_id: ctx.params.exercise_id,
+    })
+  );
+  params = Object.assign({}, { user_id: ctx.session.user_id }, params);
+  const scores = await scoresQueries.getExScoresByUserID(params);
+  ctx.status = 200;
+  ctx.body = ExtractScoresArrays(params, scores);
 });
 
 /**
