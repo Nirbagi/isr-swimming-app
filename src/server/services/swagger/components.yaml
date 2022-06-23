@@ -224,8 +224,6 @@ components:
       items:
         type: object
         properties:
-          training_id:
-            type: integer
           exercise_id:
             type: integer
           time_duration:
@@ -239,7 +237,6 @@ components:
           is_test:
             type: string
         required:
-          - training_id
           - exercise_id
           - is_test
 
