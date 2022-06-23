@@ -75,7 +75,7 @@ router.get("/ex/:exercise_id", async (ctx) => {
  *             schema:
  *               $ref: '#/definitions/ServerError'
  */
-router.get("/coach/trainings/submitted", async (ctx) => {
+router.get("/trainings/submitted", async (ctx) => {
   let params = await get_training_submitted_schema.validateAsync(
     Object.assign({}, ctx.request.query, { user_id: ctx.session.user_id })
   );
