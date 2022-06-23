@@ -60,7 +60,6 @@ router.get("/ex/:exercise_id", async (ctx) => {
  *     produces:
  *       - application/json
  *     parameters:
- *       - $ref: '#/parameters/userIdQuery'
  *       - $ref: '#/parameters/trainingIdQuery'
  *     responses:
  *       200:
@@ -76,9 +75,9 @@ router.get("/ex/:exercise_id", async (ctx) => {
  *             schema:
  *               $ref: '#/definitions/ServerError'
  */
-router.get("/trainings/submitted", async (ctx) => {
+router.get("/coach/trainings/submitted", async (ctx) => {
   let params = await get_training_submitted_schema.validateAsync(
-    ctx.request.query
+    Object.assign({}, ctx.request.query, { user_id: ctx.session.user_id })
   );
   const training = await scoresQueries.getTrainingExist(params);
   ctx.status = 200;
@@ -141,6 +140,47 @@ router.post("/add", async (ctx) => {
 });
 
 // higher authorization level required
+
+/**
+ * @swagger
+ * /scores/coach/trainings/submitted:
+ *   get:
+ *     description: Check if score was submitted for specific training.
+ *     tags: [Scores]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/userIdQuery'
+ *       - $ref: '#/parameters/trainingIdQuery'
+ *     responses:
+ *       200:
+ *         description: status of score submission.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/GetTrainingScoreSubmitted'
+ *       401:
+ *         description: Not logged in or higher authorization level is required.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/NotAuthenticatedError'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
+router.get("/coach/trainings/submitted", async (ctx) => {
+  let params = await get_training_submitted_schema.validateAsync(
+    ctx.request.query
+  );
+  const training = await scoresQueries.getTrainingExist(params);
+  ctx.status = 200;
+  if (training) ctx.body = { is_submitted: true };
+  else ctx.body = { is_submitted: false };
+});
 
 /**
  * @swagger
