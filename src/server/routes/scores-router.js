@@ -6,6 +6,7 @@ const {
   validate_user,
   add_score_schema,
   get_ex_scores_schema,
+  get_training_submitted_schema,
   update_score_schema,
   delete_score_schema,
 } = require("../services/shcema_validators/scores_schemas");
@@ -52,12 +53,49 @@ router.get("/ex/:exercise_id", async (ctx) => {
 
 /**
  * @swagger
+ * /scores/trainings/submitted:
+ *   get:
+ *     description: Check if score was submitted for specific training.
+ *     tags: [Scores]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/userIdQuery'
+ *       - $ref: '#/parameters/trainingIdQuery'
+ *     responses:
+ *       200:
+ *         description: status of score submission.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/GetExScores'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/ServerError'
+ */
+router.get("/trainings/submitted", async (ctx) => {
+  let params = await get_training_submitted_schema.validateAsync(
+    ctx.request.query
+  );
+  const training = await scoresQueries.getTrainingExist(params);
+  ctx.status = 200;
+  if (training) ctx.body = { is_submitted: true };
+  else ctx.body = { is_submitted: false };
+});
+
+/**
+ * @swagger
  * /scores/add:
  *   post:
  *     description: add training exercises scores.
  *     tags: [Scores]
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/trainingIdQuery'
  *     requestBody:
  *       name: trainings_exercises_scores
  *       description: exercises scores based on time_duration / sets / reps / weight and indication wether belongs to test or not.
@@ -82,10 +120,12 @@ router.get("/ex/:exercise_id", async (ctx) => {
  *               $ref: '#/definitions/ServerError'
  */
 router.post("/add", async (ctx) => {
-  let training_params = await add_score_schema.validateAsync(ctx.request.body);
+  let training_params = await add_score_schema.validateAsync(
+    Object.assign({}, { scores: ctx.request.body }, ctx.request.query)
+  );
   let scores = [];
-  for (idx in training_params) {
-    let params = training_params[idx];
+  for (idx in training_params.scores) {
+    let params = training_params.scores[idx];
     params = Object.assign({}, { user_id: ctx.session.user_id }, params);
     scores.push(await scoresQueries.addScore(params));
   }
@@ -105,6 +145,7 @@ router.post("/add", async (ctx) => {
  *       - application/json
  *     parameters:
  *       - $ref: '#/parameters/userIdQuery'
+ *       - $ref: '#/parameters/trainingIdQuery'
  *     requestBody:
  *       name: trainings_exercises_scores
  *       description: exercises scores based on time_duration / sets / reps / weight and indication wether belongs to test or not.
@@ -136,11 +177,13 @@ router.post("/add", async (ctx) => {
  */
 router.post("/coach/add", async (ctx) => {
   const user_id = await validate_user.validateAsync(ctx.request.query);
-  let training_params = await add_score_schema.validateAsync(ctx.request.body);
+  let training_params = await add_score_schema.validateAsync(
+    Object.assign({}, { scores: ctx.request.body }, ctx.request.query)
+  );
   let scores = [];
-  for (idx in training_params) {
-    let params = training_params[idx];
-    params = Object.assign({}, { user_id: user_id }, params);
+  for (idx in training_params.scores) {
+    let params = training_params.scores[idx];
+    params = Object.assign({}, { user_id: user_id.user_id }, params);
     scores.push(await scoresQueries.addScore(params));
   }
   ctx.status = 201;
@@ -149,14 +192,15 @@ router.post("/coach/add", async (ctx) => {
 
 /**
  * @swagger
- * /scores/edit/{ex_score_id}:
+ * /scores/edit:
  *   patch:
  *     description: update exercise submitted score.
  *     tags: [Scores]
  *     produces:
  *       - application/json
  *     parameters:
- *       - $ref: '#/parameters/scoreId'
+ *       - $ref: '#/parameters/exerciseIdQuery'
+ *       - $ref: '#/parameters/trainingIdQuery'
  *     requestBody:
  *       name: exercise_score_info
  *       description: score info to update.
@@ -186,25 +230,26 @@ router.post("/coach/add", async (ctx) => {
  *             schema:
  *               $ref: '#/definitions/ServerError'
  */
-router.patch("/edit/:ex_score_id", async (ctx) => {
+router.patch("/edit", async (ctx) => {
   const params = await update_score_schema.validateAsync(
-    Object.assign({}, { ex_score_id: ctx.params.ex_score_id }, ctx.request.body)
+    Object.assign({}, ctx.request.query, ctx.request.body)
   );
-  const ex_score_id = await scoresQueries.updateScoreByScoreID(params);
+  const ex_score_id = await scoresQueries.updateScoreByTrainEx(params);
   ctx.status = 200;
   ctx.body = { status: "score updated", ex_score_id: ex_score_id };
 });
 
 /**
  * @swagger
- * /scores/edit/{ex_score_id}:
+ * /scores/edit:
  *   delete:
  *     description: delete exercise submitted score.
  *     tags: [Scores]
  *     produces:
  *       - application/json
  *     parameters:
- *       - $ref: '#/parameters/scoreId'
+ *       - $ref: '#/parameters/exerciseIdQuery'
+ *       - $ref: '#/parameters/trainingIdQuery'
  *     responses:
  *       201:
  *         description: Score deleted successfully.
@@ -225,7 +270,7 @@ router.patch("/edit/:ex_score_id", async (ctx) => {
  *             schema:
  *               $ref: '#/definitions/ServerError'
  */
-router.delete("/edit/:ex_score_id", async (ctx) => {
+router.delete("/edit", async (ctx) => {
   const params = await delete_score_schema.validateAsync({
     ex_score_id: ctx.params.ex_score_id,
   });

@@ -113,6 +113,12 @@ exports.up = function (knex, Promise) {
         .notNull()
         .onDelete("cascade");
       table
+        .integer("training_id")
+        .references("training_id")
+        .inTable("trainings")
+        .notNull()
+        .onDelete("cascade");
+      table
         .integer("exercise_id")
         .references("exercise_id")
         .inTable("exercises")

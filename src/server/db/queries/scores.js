@@ -20,6 +20,13 @@ function getExScoresByUserID(params) {
     .where(where_stmt);
 }
 
+function getTrainingExist(params) {
+  return knex("exercises_scores")
+    .update(params)
+    .where({ training_id: params.training_id, user_id: params.user_id })
+    .first();
+}
+
 function getTestExScoresByUserID(params) {
   return knex("exercises_scores").select("*").where({
     user_id: params.user_id,
@@ -28,10 +35,10 @@ function getTestExScoresByUserID(params) {
   });
 }
 
-function updateScoreByScoreID(params) {
+function updateScoreByTrainEx(params) {
   return knex("exercises_scores")
     .update(params)
-    .where({ ex_score_id: params.ex_score_id })
+    .where({ training_id: params.training_id, exercise_id: params.exercise_id })
     .returning("*")
     .then((result) => {
       return result[0].ex_score_id;
@@ -41,7 +48,7 @@ function updateScoreByScoreID(params) {
 function deleteScore(params) {
   return knex("exercises_scores")
     .del()
-    .where({ ex_score_id: params.ex_score_id })
+    .where({ training_id: params.training_id, exercise_id: params.exercise_id })
     .returning("*")
     .then((result) => {
       return result[0].ex_score_id;
@@ -51,7 +58,8 @@ function deleteScore(params) {
 module.exports = {
   addScore,
   getExScoresByUserID,
+  getTrainingExist,
   getTestExScoresByUserID,
-  updateScoreByScoreID,
+  updateScoreByTrainEx,
   deleteScore,
 };

@@ -101,11 +101,25 @@ parameters:
     in: path
     required: true
     type: integer
+  
+  exerciseIdQuery:
+    name: exercise_id
+    description: The internal identification number of an excercise.
+    in: query
+    required: true
+    type: integer
 
   trainingId:
     name: training_id
     description: The internal identification number of an training/test.
     in: path
+    required: true
+    type: integer
+
+    trainingIdQuery:
+    name: training_id
+    description: The internal identification number of an training/test.
+    in: query
     required: true
     type: integer
 
