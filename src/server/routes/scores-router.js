@@ -126,7 +126,14 @@ router.post("/add", async (ctx) => {
   let scores = [];
   for (idx in training_params.scores) {
     let params = training_params.scores[idx];
-    params = Object.assign({}, { user_id: ctx.session.user_id }, params);
+    params = Object.assign(
+      {},
+      {
+        user_id: ctx.session.user_id,
+        training_id: training_params.training_id,
+      },
+      params
+    );
     scores.push(await scoresQueries.addScore(params));
   }
   ctx.status = 201;
