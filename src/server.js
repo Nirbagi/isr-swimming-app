@@ -99,22 +99,28 @@ app.use(async (ctx, next) => {
     // videos
     "/videos/add",
     "/videos/edit",
-    //announcements
+    // announcements
     "/announcements/team",
     "/announcements/add",
     "/announcements/edit",
-    //teams
+    // teams
     "/team/all",
     "/team/coach",
-    "/team/coach/members",
     "/team/assign",
     "/team/unassign",
     "/team/add",
     "/team/edit",
-    //exercises
+    // exercises
     "/exercises/add",
     "/exercises/coach",
     "/exercises/edit",
+    // trainings
+    "/trainings/past/tests",
+    "/trainings/coach",
+    "/trainings/add",
+    // scores
+    "/scores/coach",
+    "/scores/edit",
   ];
   adminCoachPaths.forEach((path) => {
     if (ctx.role_id > 2 && ctx.path.includes(path)) {
