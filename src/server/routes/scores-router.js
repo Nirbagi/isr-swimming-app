@@ -265,7 +265,11 @@ router.get("/coach/ex/:exercise_id", async (ctx) => {
 router.post("/coach/add", async (ctx) => {
   const ids = await coach_add_schema.validateAsync(ctx.request.query);
   let training_params = await add_score_schema.validateAsync(
-    Object.assign({}, { scores: ctx.request.body }, ctx.request.query)
+    Object.assign(
+      {},
+      { scores: ctx.request.body },
+      { training_id: ids.training_id }
+    )
   );
   let scores = [];
   for (idx in training_params.scores) {
