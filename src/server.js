@@ -91,43 +91,12 @@ app.use(async (ctx, next) => {
 
 // Authorization
 app.use(async (ctx, next) => {
-  const adminCoachPaths = [
-    // users
-    "/users/role",
-    "/users/role/edit",
-    "/users/user_info",
-    // videos
-    "/videos/add",
-    "/videos/edit",
-    // announcements
-    "/announcements/team",
-    "/announcements/add",
-    "/announcements/edit",
-    // teams
-    "/team/all",
-    "/team/coach",
-    "/team/assign",
-    "/team/unassign",
-    "/team/add",
-    "/team/edit",
-    // exercises
-    "/exercises/add",
-    "/exercises/coach",
-    "/exercises/edit",
-    // trainings
-    "/trainings/past/tests",
-    "/trainings/coach",
-    "/trainings/add",
-    // scores
-    "/scores/coach",
-    "/scores/edit",
-  ];
+  const adminCoachPaths = process.env.ADMIN_COACH_PATHS.split(",");
   adminCoachPaths.forEach((path) => {
     if (ctx.role_id > 2 && ctx.path.includes(path)) {
       ctx.throw(401, "Not Authorized");
     }
   });
-
   await next();
 });
 
