@@ -19,6 +19,7 @@ npx knex seed:run --specific=trainings_seed.js --env development
 npx knex seed:run --specific=training_videos_seed.js --env development
 npx knex seed:run --specific=exercises_scores_seed.js --env development
 npx knex seed:run --specific=announcements_seed.js --env development
+npx knex seed:run --specific=events_seed.js --env development
 echo "--------------------------------------------------------------------"
 echo "finished -- applying seeds"
 echo "--------------------------------------------------------------------"

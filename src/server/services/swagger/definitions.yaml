@@ -730,6 +730,34 @@ definitions:
         type: int
         example: 1
 
+  # Events
+  GeneralEvents:
+    type: array
+    items:
+      type: object
+      properties:
+        event_id:
+          type: integer
+          example: 1
+        event_manager_id:
+          type: integer
+          example: 1
+        description:
+          type: string
+          example: "event description"
+        location:
+          type: string
+          example: "Tel-Aviv"
+        datetime:
+          type: string
+          example: "2022-06-27T16:30:00.000Z"
+        created_at:
+          type: string
+          example: "2022-06-24T09:36:14.300Z"
+        updated_at:
+          type: string
+          example: "2022-06-24T09:36:14.300Z"
+
   # Components
   Components:
     type: array

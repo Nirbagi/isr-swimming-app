@@ -16,6 +16,7 @@ const VideosRoutes = require("./server/routes/videos-router");
 const TeamRoutes = require("./server/routes/team-router");
 const ExercisesRoutes = require("./server/routes/exercises-router");
 const TrainigsRoutes = require("./server/routes/trainings-router");
+const EventsRoutes = require("./server/routes/events-router");
 const ComponentsRoutes = require("./server/routes/components-router");
 
 const userQueries = require("./server/db/queries/users");
@@ -80,6 +81,8 @@ app.use(async (ctx, next) => {
     "/announcements/general",
     // videos
     "/videos",
+    // events
+    "/events/general",
   ];
   if (!ctx.isAuthenticated() && !nonSecurePaths.includes(ctx.path)) {
     ctx.throw(401, "Not Authenticated");
@@ -117,6 +120,7 @@ app.use(TeamRoutes.middleware());
 app.use(ExercisesRoutes.middleware());
 app.use(DocsRoutes.middleware());
 app.use(TrainigsRoutes.middleware());
+app.use(EventsRoutes.middleware());
 app.use(ComponentsRoutes.middleware());
 
 app.listen(PORT, () => {

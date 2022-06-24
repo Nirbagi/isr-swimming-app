@@ -139,13 +139,31 @@ exports.up = function (knex, Promise) {
         .integer("team_id")
         .references("team_id")
         .inTable("teams")
+        .onDelete("cascade");
+      table.timestamps(false, true);
+    })
+    .createTable("events", (table) => {
+      table.increments("event_id").primary().notNullable().unique();
+      table
+        .integer("event_manager_id")
+        .references("user_id")
+        .inTable("users")
         .onDelete("SET NULL");
+      table.string("description").notNullable();
+      table.string("location");
+      table
+        .integer("team_id")
+        .references("team_id")
+        .inTable("teams")
+        .onDelete("SET NULL");
+      table.timestamp("datetime").notNullable();
       table.timestamps(false, true);
     });
 };
 
 exports.down = (knex, Promise) => {
   return knex.schema
+    .dropTable("events")
     .dropTable("announcements")
     .dropTable("exercises_scores")
     .dropTable("training_videos")
