@@ -2,7 +2,7 @@ const { Joi } = require("koa-joi-router");
 
 const coach_add_schema = Joi.object({
   user_id: Joi.number().integer(),
-  trainig_id: Joi.number().integer(),
+  training_id: Joi.number().integer(),
 });
 
 const add_score_schema = Joi.object({
