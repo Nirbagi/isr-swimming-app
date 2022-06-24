@@ -1,7 +1,8 @@
 const { Joi } = require("koa-joi-router");
 
-const validate_user = Joi.object({
+const coach_add_schema = Joi.object({
   user_id: Joi.number().integer(),
+  trainig_id: Joi.number().integer(),
 });
 
 const add_score_schema = Joi.object({
@@ -56,7 +57,7 @@ const delete_score_schema = Joi.object({
 });
 
 module.exports = {
-  validate_user,
+  coach_add_schema,
   add_score_schema,
   get_ex_scores_schema,
   get_coach_ex_scores_schema,

@@ -3,7 +3,7 @@ const scoresQueries = require("../db/queries/scores");
 const { ExtractScoresArrays } = require("../services/scores");
 
 const {
-  validate_user,
+  coach_add_schema,
   add_score_schema,
   get_ex_scores_schema,
   get_coach_ex_scores_schema,
@@ -263,14 +263,18 @@ router.get("/coach/ex/:exercise_id", async (ctx) => {
  *               $ref: '#/definitions/ServerError'
  */
 router.post("/coach/add", async (ctx) => {
-  const user_id = await validate_user.validateAsync(ctx.request.query);
+  const ids = await coach_add_schema.validateAsync(ctx.request.query);
   let training_params = await add_score_schema.validateAsync(
     Object.assign({}, { scores: ctx.request.body }, ctx.request.query)
   );
   let scores = [];
   for (idx in training_params.scores) {
     let params = training_params.scores[idx];
-    params = Object.assign({}, { user_id: user_id.user_id }, params);
+    params = Object.assign(
+      {},
+      { user_id: ids.user_id, training_id: ids.training_id },
+      params
+    );
     scores.push(await scoresQueries.addScore(params));
   }
   ctx.status = 201;
