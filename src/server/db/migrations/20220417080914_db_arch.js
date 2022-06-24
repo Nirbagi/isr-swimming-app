@@ -93,11 +93,6 @@ exports.up = function (knex, Promise) {
     })
     .createTable("training_videos", (table) => {
       table.increments("video_id").primary().notNullable().unique();
-      table
-        .integer("training_id")
-        .references("training_id")
-        .inTable("trainings")
-        .onDelete("cascade");
       table.string("name");
       table.string("category");
       table.string("sub_category");

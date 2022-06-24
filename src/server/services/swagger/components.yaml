@@ -119,8 +119,6 @@ components:
           type: string
         link:
           type: string
-        training_id:
-          type: integer
       required:
         - name
         - category
@@ -138,8 +136,6 @@ components:
           type: string
         link:
           type: string
-        training_id:
-          type: integer
 
     # Teams
     createUpdateTeam:

@@ -11,7 +11,6 @@ const create_video_schema = Joi.object({
   name: Joi.string().required(),
   category: Joi.string().required(),
   sub_category: Joi.string().required(),
-  training_id: Joi.number().integer().default(null),
   link: Joi.string().required(),
 });
 
@@ -20,7 +19,6 @@ const update_video_schema = Joi.object({
   name: Joi.string(),
   category: Joi.string(),
   sub_category: Joi.string(),
-  training_id: Joi.number().integer(),
   link: Joi.string(),
 });
 
