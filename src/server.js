@@ -91,6 +91,12 @@ app.use(async (ctx, next) => {
 
 // Authorization
 app.use(async (ctx, next) => {
+  const adminPaths = process.env.ADMIN_PATHS.split(",");
+  adminPaths.forEach((path) => {
+    if (ctx.role_id > 1 && ctx.path.includes(path)) {
+      ctx.throw(401, "Not Authorized");
+    }
+  });
   const adminCoachPaths = process.env.ADMIN_COACH_PATHS.split(",");
   adminCoachPaths.forEach((path) => {
     if (ctx.role_id > 2 && ctx.path.includes(path)) {
