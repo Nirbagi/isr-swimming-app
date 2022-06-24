@@ -16,6 +16,7 @@ const VideosRoutes = require("./server/routes/videos-router");
 const TeamRoutes = require("./server/routes/team-router");
 const ExercisesRoutes = require("./server/routes/exercises-router");
 const TrainigsRoutes = require("./server/routes/trainings-router");
+const ComponentsRoutes = require("./server/routes/components-router");
 
 const userQueries = require("./server/db/queries/users");
 // env vars
@@ -116,6 +117,7 @@ app.use(TeamRoutes.middleware());
 app.use(ExercisesRoutes.middleware());
 app.use(DocsRoutes.middleware());
 app.use(TrainigsRoutes.middleware());
+app.use(ComponentsRoutes.middleware());
 
 app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}`);

@@ -15,3 +15,5 @@ tags:
     description: Trainings and Tests management for ISRSA coaches.
   - name: Scores
     description: Recorded scores of exercises from trainings / tests.
+  - name: Components
+    description: Components to render based on role_id for front-end.

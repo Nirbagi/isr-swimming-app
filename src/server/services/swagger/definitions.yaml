@@ -730,6 +730,13 @@ definitions:
         type: int
         example: 1
 
+  # Components
+  Components:
+    type: array
+    items:
+      type: string
+      example: "/home"
+
   # Errors
   UserAssignedError:
     type: object
