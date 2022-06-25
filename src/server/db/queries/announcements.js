@@ -20,7 +20,7 @@ function getAnnouncements(params) {
     .then((results) => results["data"]);
 }
 
-function updateAnnouncement(user_id, params) {
+function updateAnnouncement(params) {
   params.updated_at = knex.fn.now();
   return knex("announcements")
     .update(params)

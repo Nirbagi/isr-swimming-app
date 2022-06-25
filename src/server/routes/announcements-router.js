@@ -240,10 +240,7 @@ router.patch("/edit/:announcement_id", async (ctx) => {
     )
   );
   try {
-    const ancmt_id = await ancmtQueries.updateAnnouncement(
-      ctx.session.user_id,
-      params
-    );
+    const ancmt_id = await ancmtQueries.updateAnnouncement(params);
     ctx.status = 200;
     ctx.body = { status: "updated", announcement_id: ancmt_id };
   } catch (err) {
