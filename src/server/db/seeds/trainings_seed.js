@@ -35,7 +35,7 @@ exports.seed = (knex, Promise) => {
           team_id: 2,
           coach_id: 3,
           training_type: "אימון - כוח",
-          target_date: new Date("2022-06-28"),
+          target_date: new Date("2022-06-24"),
           exercises: {
             1: 2,
             2: 3,
