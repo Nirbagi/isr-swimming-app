@@ -119,7 +119,7 @@ exports.up = function (knex, Promise) {
         .inTable("exercises")
         .notNull()
         .onDelete("cascade");
-      table.integer("time_duration");
+      table.float("time_duration");
       table.integer("sets");
       table.integer("reps");
       table.float("weight");
