@@ -67,12 +67,12 @@ router.get("/", async (ctx) => {
  *             schema:
  *               $ref: '#/definitions/ServerError'
  */
-// router.get("/public", async (ctx) => {
-//   const params = await get_exercises_schema.validateAsync(ctx.request.query);
-//   const exercises = await exercisesQueries.getPublicExercises(params);
-//   ctx.status = 200;
-//   ctx.body = exercises;
-// });
+router.get("/public", async (ctx) => {
+  const params = await get_exercises_schema.validateAsync(ctx.request.query);
+  const exercises = await exercisesQueries.getPublicExercises(params);
+  ctx.status = 200;
+  ctx.body = exercises;
+});
 
 // higher authorization level required
 
