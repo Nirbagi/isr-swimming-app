@@ -24,7 +24,7 @@ function updateAnnouncement(params) {
   params.updated_at = knex.fn.now();
   return knex("announcements")
     .update(params)
-    .where({ announcement_id: params.announcement_id })
+    .where({ announcement_id: parseInt(params.announcement_id) })
     .returning("announcement_id")
     .then((id) => id[0]["announcement_id"]);
 }

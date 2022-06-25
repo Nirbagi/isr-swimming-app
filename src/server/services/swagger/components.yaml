@@ -107,6 +107,34 @@ components:
         image_link:
           type: string
 
+    # Event
+    createEvent:
+      type: object
+      properties:
+        description:
+          type: string
+        location:
+          type: string
+        datetime:
+          type: string
+        team_id:
+          type: string
+      required:
+        - description
+        - datetime
+
+    updateEvent:
+      type: object
+      properties:
+        description:
+          type: string
+        location:
+          type: string
+        datetime:
+          type: string
+        team_id:
+          type: string
+
     # Videos
     addVideo:
       type: object

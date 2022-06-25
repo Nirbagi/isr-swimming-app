@@ -20,11 +20,11 @@ function getEvents(params) {
     .then((results) => results["data"]);
 }
 
-function updateEvent(user_id, params) {
+function updateEvent(params) {
   params.updated_at = knex.fn.now();
   return knex("events")
     .update(params)
-    .where({ event_id: params.event_id })
+    .where({ event_id: parseInt(params.event_id) })
     .returning("event_id")
     .then((id) => id[0]["event_id"]);
 }

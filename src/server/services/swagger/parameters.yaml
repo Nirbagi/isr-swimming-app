@@ -80,6 +80,14 @@ parameters:
     required: true
     type: integer
 
+  # Events
+  eventId:
+    name: event_id
+    description: The internal identification number of an event.
+    in: path
+    required: true
+    type: integer
+
   # Videos
   videoCategory:
     name: category

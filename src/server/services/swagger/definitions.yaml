@@ -748,6 +748,9 @@ definitions:
         location:
           type: string
           example: "Tel-Aviv"
+        team_id:
+          type: int
+          example: null
         datetime:
           type: string
           example: "2022-06-27T16:30:00.000Z"
@@ -757,6 +760,66 @@ definitions:
         updated_at:
           type: string
           example: "2022-06-24T09:36:14.300Z"
+
+  TeamEvents:
+    type: array
+    items:
+      type: object
+      properties:
+        event_id:
+          type: integer
+          example: 1
+        event_manager_id:
+          type: integer
+          example: 1
+        description:
+          type: string
+          example: "event description"
+        location:
+          type: string
+          example: "Tel-Aviv"
+        team_id:
+          type: int
+          example: 1
+        datetime:
+          type: string
+          example: "2022-06-27T16:30:00.000Z"
+        created_at:
+          type: string
+          example: "2022-06-24T09:36:14.300Z"
+        updated_at:
+          type: string
+          example: "2022-06-24T09:36:14.300Z"
+
+  CreatedEvent:
+    type: object
+    properties:
+      status:
+        type: string
+        example: created
+      event_id:
+        type: integer
+        example: 1
+
+  UpdatedEvent:
+    type: object
+    properties:
+      status:
+        type: string
+        example: updated
+      event_id:
+        type: integer
+        example: 1
+
+  DeletedEvent:
+    type: object
+    properties:
+      status:
+        type: string
+        example: deleted
+      event_id:
+        type: integer
+        example: 1
 
   # Components
   Components:
