@@ -21,6 +21,12 @@ exports.seed = (knex, Promise) => {
           created_at: knex.fn.now(),
           updated_at: knex.fn.now(),
         },
+        {
+          user_id: 8,
+          team_id: 3,
+          created_at: knex.fn.now(),
+          updated_at: knex.fn.now(),
+        },
       ]);
     });
 };
